@@ -1,0 +1,40 @@
+<!--
+  Generated template for the RecursosPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="corp">
+    <ion-searchbar color="corp" (input)="getItems($event)"></ion-searchbar>
+  </ion-navbar>
+</ion-header>
+
+
+
+<ion-content>
+  <div>
+    <ion-segment [(ngModel)]="opciones" (ngModelChange)="cambiarRecursos()">
+      <ion-segment-button value="aulas">
+        Aulas
+      </ion-segment-button>
+      <ion-segment-button value="recursos">
+        Recursos
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  <div>
+    <ion-list>
+      <ion-item *ngFor="let recurso of recursos" (click)="abrirMenuOpciones(recurso)">
+        <ion-avatar item-start>
+          <img src="assets/imgs/recurso.png">
+        </ion-avatar>
+        <h2>{{recurso.nombre}}</h2>
+        <div *ngIf="recurso.capacidad">
+          <h3><b>Capacidad: </b> {{recurso.capacidad}}</h3>
+        </div>
+      </ion-item>
+
+    </ion-list>
+  </div>
+</ion-content>
