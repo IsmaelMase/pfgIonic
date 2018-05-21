@@ -7,7 +7,7 @@
 <ion-header>
   <ion-toolbar color="corp">
     <ion-title>
-      Realizar Reserva
+      <span>Realizar Reserva</span>
     </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
@@ -25,7 +25,7 @@
   <ion-list>
     <ion-item>
       <ion-label>Fecha</ion-label>
-      <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY"></ion-datetime>
+      <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="reserva.fechas_reservas[0]" (ngModelChange)="getHorasDisponibles()"></ion-datetime>
     </ion-item>
 
 
@@ -44,25 +44,18 @@
     <ion-list>
       <ion-item>
         <ion-label>Curso</ion-label>
-        <ion-select interface="popover">
-          <ion-option value="nes">1ºDAM</ion-option>
-          <ion-option value="nes">1ºDAM</ion-option>
-          <ion-option value="nes">1ºDAM</ion-option>
-          <ion-option value="nes">1ºDAM</ion-option>
-          <ion-option value="nes">1ºDAM</ion-option>
-          <ion-option value="nes">1ºDAM</ion-option>
-          <ion-option value="nes">1ºDAM</ion-option>
-          <ion-option value="nes">1ºDAM</ion-option>
-          <ion-option value="nes">1ºDAM</ion-option>
-          <ion-option value="nes">1ºDAM</ion-option>
-          <ion-option value="nes">1ºDAM</ion-option>
-          <ion-option value="nes">1ºDAM</ion-option>
+        <ion-select interface="popover" [(ngModel)]="reserva.curso">
+        <ion-option *ngFor="let curso of usuario.cursos" value="{{curso.id}}">{{curso.nombre}}</ion-option>
         </ion-select>
       </ion-item>
     </ion-list>
     <ion-item>
       <ion-label stacked>Anotación</ion-label>
-      <ion-textarea rows="10" type="text"></ion-textarea>
+      <ion-textarea rows="10" type="text" [(ngModel)]="reserva.anotacion"></ion-textarea>
     </ion-item>
   </ion-list>
+
+  <button ion-button icon-left type="submit" (click)="realizarReserva()" block color="secondary">
+    <ion-icon name="log-in"></ion-icon>
+    Reservar</button>
 </ion-content>

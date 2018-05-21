@@ -84,4 +84,8 @@ export class RecursosPage {
     actionSheet.present();
   }
 
+  getItems(event){
+    console.log(event)
+  }
+
 }

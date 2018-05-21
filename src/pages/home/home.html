@@ -1,6 +1,11 @@
 <ion-header >
   <ion-navbar color="corp">
-    <ion-title>Inicio</ion-title>
+    <ion-title><span>Inicio</span></ion-title>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="logout()">
+        <ion-icon name="md-log-out"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

@@ -27,6 +27,9 @@ export class LoginPage {
       email: ['', Validators.required],
       password: ['', Validators.required]
     });
+    if (localStorage.getItem("token")) {
+      this.navCtrl.setRoot(TabsPage);
+    }
     this.usuario = new Usuario("", "", "", "", "", "", "", [], "");
   }
 

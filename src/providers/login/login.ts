@@ -1,7 +1,6 @@
-import { HttpClient, HttpHeaders, HttpHeaderResponse,HttpResponse,} from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CONSTANTS } from '../../global/constants';
-import { Usuario } from '../../modelo/usuario';
 
 /*
   Generated class for the LoginProvider provider.

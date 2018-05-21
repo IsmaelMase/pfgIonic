@@ -18,6 +18,7 @@ import { LoginProvider } from '../providers/login/login';
 import { HttpClientModule } from '@angular/common/http';
 import { UsuarioProvider } from '../providers/usuario/usuario';
 import { RecursoProvider } from '../providers/recurso/recurso';
+import { ReservaProvider } from '../providers/reserva/reserva';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { RecursoProvider } from '../providers/recurso/recurso';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     LoginProvider,
     UsuarioProvider,
-    RecursoProvider
+    RecursoProvider,
+    ReservaProvider
   ]
 })
 export class AppModule { }
