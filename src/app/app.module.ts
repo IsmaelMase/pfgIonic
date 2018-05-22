@@ -19,6 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { UsuarioProvider } from '../providers/usuario/usuario';
 import { RecursoProvider } from '../providers/recurso/recurso';
 import { ReservaProvider } from '../providers/reserva/reserva';
+import { ModalIncidenciaPage } from '../pages/modal-incidencia/modal-incidencia';
+import { ModalReservasRecursoPage } from '../pages/modal-reservas-recurso/modal-reservas-recurso';
 
 
 @NgModule({
@@ -30,7 +32,9 @@ import { ReservaProvider } from '../providers/reserva/reserva';
     ReservasPage,
     PerfilPage,
     ModalReservaPage,
-    LoginPage
+    LoginPage,
+    ModalIncidenciaPage,
+    ModalReservasRecursoPage
   ],
   imports: [
     BrowserModule,
@@ -47,7 +51,9 @@ import { ReservaProvider } from '../providers/reserva/reserva';
     ReservasPage,
     PerfilPage,
     ModalReservaPage,
-    LoginPage
+    LoginPage,
+    ModalIncidenciaPage,
+    ModalReservasRecursoPage
   ],
   providers: [
     StatusBar,

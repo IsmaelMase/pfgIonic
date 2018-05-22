@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CONSTANTS } from '../../global/constants';
+import { Recurso } from '../../modelo/recurso';
 
 /*
   Generated class for the RecursoProvider provider.
@@ -26,6 +27,13 @@ export class RecursoProvider {
     let headers = new HttpHeaders({ 'Authorization': localStorage.getItem("token") });
 
     return this.http.get(this.url + 'recurso/aulas', { headers: headers })
+  }
+
+  addRecurso(recurso: Recurso) {
+    let json = JSON.stringify(recurso);
+    let head = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") });
+    return this.http.post(this.url + 'recurso/saveRecurso', json, { headers: head });
+
   }
 
 }

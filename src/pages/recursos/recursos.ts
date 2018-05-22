@@ -4,6 +4,9 @@ import { ModalReservaPage } from '../modal-reserva/modal-reserva';
 import { RecursoProvider } from '../../providers/recurso/recurso';
 import { Recurso } from '../../modelo/recurso';
 import { LoginPage } from '../login/login';
+import { ModalIncidenciaPage } from '../modal-incidencia/modal-incidencia';
+import { ModalReservasRecursoPageModule } from '../modal-reservas-recurso/modal-reservas-recurso.module';
+import { ModalReservasRecursoPage } from '../modal-reservas-recurso/modal-reservas-recurso';
 /**
  * Generated class for the RecursosPage page.
  *
@@ -20,6 +23,8 @@ export class RecursosPage {
 
   public opciones: string;
   public recursos: Recurso[];
+  public recursosTotales: Recurso[];
+  public buscador: string;
   constructor(public _recursoService: RecursoProvider, public navCtrl: NavController, public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController, public platform: Platform,
     public modalCtrl: ModalController) {
@@ -27,15 +32,19 @@ export class RecursosPage {
 
   ionViewDidLoad() {
     this.opciones = "aulas";
-    this.cambiarRecursos();
+    this.cambiarRecursos(null);
   }
 
-  cambiarRecursos() {
+  cambiarRecursos(refresher) {
     if (this.opciones === "aulas") {
       this._recursoService.getAulas().subscribe(
         (response: any) => {
           this.recursos = response;
+          this.recursosTotales = response;
           console.log(this.recursos);
+          if (refresher != null) {
+            refresher.complete();
+          }
         },
         (error: any) => {
           this.navCtrl.setRoot(LoginPage);
@@ -46,6 +55,9 @@ export class RecursosPage {
         (response: any) => {
           this.recursos = response;
           console.log(this.recursos);
+          if (refresher != null) {
+            refresher.complete();
+          }
         },
         (error: any) => {
           this.navCtrl.setRoot(LoginPage);
@@ -62,13 +74,21 @@ export class RecursosPage {
           text: 'Comunicar Incidencia',
           icon: !this.platform.is('ios') ? 'md-alert' : null,
           handler: () => {
-            console.log('Incidencia clicked');
+            let modal = this.modalCtrl.create(ModalIncidenciaPage, { 'recurso': recurso });
+            modal.present();
+          }
+        }, {
+          text: 'Realizar reserva',
+          icon: !this.platform.is('ios') ? 'md-time' : null,
+          handler: () => {
+            let modal = this.modalCtrl.create(ModalReservaPage, { 'recurso': recurso });
+            modal.present();
           }
         }, {
           text: 'Reservas',
-          icon: !this.platform.is('ios') ? 'md-time' : null,
+          icon: !this.platform.is('ios') ? 'md-calendar' : null,
           handler: () => {
-            let modal = this.modalCtrl.create(ModalReservaPage,{'recurso':recurso});
+            let modal = this.modalCtrl.create(ModalReservasRecursoPage, { 'recurso': recurso });
             modal.present();
           }
         }, {
@@ -84,8 +104,8 @@ export class RecursosPage {
     actionSheet.present();
   }
 
-  getItems(event){
-    console.log(event)
+  getItems() {
+    this.recursos = this.recursosTotales.filter((recurso: Recurso) => recurso.nombre.toUpperCase().includes(this.buscador.toUpperCase()));
   }
 
 }

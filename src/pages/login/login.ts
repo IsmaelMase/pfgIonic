@@ -49,7 +49,7 @@ export class LoginPage {
         this.navCtrl.setRoot(TabsPage);
       },
       (error: any) => {
-        console.log(error);
+        console.log(error.status);
         this.mostrarMensajeIncorrecto();
       }
     );

@@ -32,11 +32,8 @@
     <ion-list>
       <ion-item>
         <ion-label>Hora</ion-label>
-        <ion-select interface="popover">
-          <ion-option value="nes">8:30-9:30</ion-option>
-          <ion-option value="n64">9:30-10:30</ion-option>
-          <ion-option value="ps">9:30-10:30</ion-option>
-          <ion-option value="genesis">9:30-10:30</ion-option>
+        <ion-select interface="popover" [(ngModel)]="reserva.intervalos_reservas[0]">
+          <ion-option *ngFor="let hora of horasDisponibles" value="{{hora}}">{{hora}}</ion-option>
         </ion-select>
       </ion-item>
     </ion-list>
@@ -44,7 +41,7 @@
     <ion-list>
       <ion-item>
         <ion-label>Curso</ion-label>
-        <ion-select interface="popover" [(ngModel)]="reserva.curso">
+        <ion-select interface="popover" [(ngModel)]="reserva.curso"> 
         <ion-option *ngFor="let curso of usuario.cursos" value="{{curso.id}}">{{curso.nombre}}</ion-option>
         </ion-select>
       </ion-item>
@@ -56,6 +53,6 @@
   </ion-list>
 
   <button ion-button icon-left type="submit" (click)="realizarReserva()" block color="secondary">
-    <ion-icon name="log-in"></ion-icon>
+    <ion-icon name="md-checkmark"></ion-icon>
     Reservar</button>
 </ion-content>
