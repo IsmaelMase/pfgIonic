@@ -10,16 +10,23 @@ export class ReservaProvider {
   constructor(public http: HttpClient) {
     this.url = CONSTANTS.url;
   }
-  
+
 
   getReservas(fecha: string, id: string) {
     let json = JSON.stringify(fecha);
-    console.log(json);
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") });
 
     return this.http.post(this.url + 'reserva/reservasByRecursoAndFecha/' + id, json, { headers: headers })
 
+  }
+
+  getReservasByUsuario(fecha: string, id: string) {
+    let json = JSON.stringify(fecha);
+
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") });
+
+    return this.http.post(this.url + 'reserva/reservasByUsuarioAndFecha/' + id, json, { headers: headers })
   }
 
 
@@ -42,7 +49,7 @@ export class ReservaProvider {
   }
 
   removeReserva(id: String) {
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json','Authorization': localStorage.getItem("token") });
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") });
 
     return this.http.delete(this.url + 'reserva/removeReserva/' + id, { headers: headers })
 

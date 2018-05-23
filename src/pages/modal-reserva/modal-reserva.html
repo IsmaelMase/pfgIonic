@@ -19,20 +19,22 @@
 
 <ion-content padding>
   <div class="tituloRecurso">
-    <h5><b>Recurso: </b>{{recurso.nombre}}</h5>
+    <h5>
+      <b>Recurso: </b>{{recurso.nombre}}</h5>
   </div>
   <br>
   <ion-list>
     <ion-item>
       <ion-label>Fecha</ion-label>
-      <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="reserva.fechas_reservas[0]" (ngModelChange)="getHorasDisponibles()"></ion-datetime>
+      <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" name="fecha" [(ngModel)]="reserva.fechas_reservas[0]"
+        (ngModelChange)="getHorasDisponibles()"></ion-datetime>
     </ion-item>
 
 
     <ion-list>
       <ion-item>
         <ion-label>Hora</ion-label>
-        <ion-select interface="popover" [(ngModel)]="reserva.intervalos_reservas[0]">
+        <ion-select interface="popover" name="hora" [(ngModel)]="reserva.intervalos_reservas[0]">
           <ion-option *ngFor="let hora of horasDisponibles" value="{{hora}}">{{hora}}</ion-option>
         </ion-select>
       </ion-item>
@@ -41,18 +43,20 @@
     <ion-list>
       <ion-item>
         <ion-label>Curso</ion-label>
-        <ion-select interface="popover" [(ngModel)]="reserva.curso"> 
-        <ion-option *ngFor="let curso of usuario.cursos" value="{{curso.id}}">{{curso.nombre}}</ion-option>
+        <ion-select interface="popover" name="curso" [(ngModel)]="reserva.curso">
+          <ion-option *ngFor="let curso of usuario.cursos" value="{{curso.id}}">{{curso.nombre}}</ion-option>
         </ion-select>
       </ion-item>
     </ion-list>
+
     <ion-item>
       <ion-label stacked>Anotación</ion-label>
-      <ion-textarea rows="10" type="text" [(ngModel)]="reserva.anotacion"></ion-textarea>
+      <ion-textarea rows="10" type="text" name="anotacion" [(ngModel)]="reserva.anotacion"></ion-textarea>
     </ion-item>
   </ion-list>
 
-  <button ion-button icon-left type="submit" (click)="realizarReserva()" block color="secondary">
+  <button ion-button icon-left type="button" (click)="realizarReserva()" [disabled]="!reserva.fechas_reservas[0] || !reserva.fechas_reservas[0] || !reserva.curso"
+    block color="secondary">
     <ion-icon name="md-checkmark"></ion-icon>
     Reservar</button>
 </ion-content>

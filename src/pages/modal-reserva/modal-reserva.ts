@@ -27,8 +27,7 @@ export class ModalReservaPage {
   public horasDisponibles: string[];
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
-    public toastCtrl: ToastController, public app: App
-  ) {
+    public toastCtrl: ToastController, public app: App) {
     this.recurso = navParams.get('recurso');
     this.usuario = JSON.parse(localStorage.getItem("usuario"));
     this.reserva = new Reserva("", [], [], this.usuario, this.recurso, null, "");
@@ -46,12 +45,12 @@ export class ModalReservaPage {
     this.selectCurso(this.reserva.curso);
     console.log(this.reserva);
     this._reservaService.addReserva(this.reserva).subscribe(
-      (response:any) => {
+      (response: any) => {
         console.log(response)
         this.mostrarMensajeCorrecto();
         this.dismiss();
       },
-      (error:any) => {
+      (error: any) => {
         if (error.status === 403) {
           this.app.getRootNav().setRoot(LoginPage);
         } else {
@@ -80,7 +79,7 @@ export class ModalReservaPage {
       (error: any) => {
         if (error.status == 403) {
           this.app.getRootNav().setRoot(LoginPage);
-        }else {
+        } else {
           this.mostrarMensajeIncorrecto();
         }
         console.log(error);

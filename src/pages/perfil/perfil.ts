@@ -39,6 +39,11 @@ export class PerfilPage {
     this.usuario.password = "";
   }
 
+  logout() {
+    localStorage.clear();
+    this.app.getRootNav().setRoot(LoginPage);
+  }
+  
   saveUsuario() {
     this.usuario.password = btoa(this.usuario.password);
     this._usuarioService.saveUsuario(this.usuario).subscribe(

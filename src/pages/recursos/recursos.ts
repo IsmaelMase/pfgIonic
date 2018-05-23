@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams, ActionSheetController, Platform } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams, ActionSheetController, Platform, LoadingController, App, ToastController } from 'ionic-angular';
 import { ModalReservaPage } from '../modal-reserva/modal-reserva';
 import { RecursoProvider } from '../../providers/recurso/recurso';
 import { Recurso } from '../../modelo/recurso';
@@ -24,10 +24,11 @@ export class RecursosPage {
   public opciones: string;
   public recursos: Recurso[];
   public recursosTotales: Recurso[];
-  public buscador: string;
+  public buscador: string="";
   constructor(public _recursoService: RecursoProvider, public navCtrl: NavController, public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController, public platform: Platform,
-    public modalCtrl: ModalController) {
+    public modalCtrl: ModalController, public loadingCtrl: LoadingController, public app: App,
+    public toastCtrl: ToastController) {
   }
 
   ionViewDidLoad() {
@@ -35,19 +36,33 @@ export class RecursosPage {
     this.cambiarRecursos(null);
   }
 
+
+
   cambiarRecursos(refresher) {
+    let loading = this.loadingCtrl.create({
+      spinner: 'crescent',
+      content: 'Cargando. Espere por favor'
+    });
+    loading.present();
     if (this.opciones === "aulas") {
       this._recursoService.getAulas().subscribe(
         (response: any) => {
           this.recursos = response;
           this.recursosTotales = response;
           console.log(this.recursos);
+          this.getItems();
           if (refresher != null) {
             refresher.complete();
           }
+          loading.dismiss();
         },
         (error: any) => {
-          this.navCtrl.setRoot(LoginPage);
+          if (error.status == 403) {
+            this.app.getRootNav().setRoot(LoginPage);
+          } else {
+            this.mostrarMensajeIncorrecto();
+            loading.dismiss();
+          }
         }
       );
     } else {
@@ -55,12 +70,19 @@ export class RecursosPage {
         (response: any) => {
           this.recursos = response;
           console.log(this.recursos);
+          this.getItems();
           if (refresher != null) {
             refresher.complete();
           }
+          loading.dismiss();
         },
         (error: any) => {
-          this.navCtrl.setRoot(LoginPage);
+          if (error.status == 403) {
+            this.app.getRootNav().setRoot(LoginPage);
+          } else {
+            this.mostrarMensajeIncorrecto();
+            loading.dismiss();
+          }
         }
       );
     }
@@ -106,6 +128,14 @@ export class RecursosPage {
 
   getItems() {
     this.recursos = this.recursosTotales.filter((recurso: Recurso) => recurso.nombre.toUpperCase().includes(this.buscador.toUpperCase()));
+  }
+
+  mostrarMensajeIncorrecto() {
+    let toast = this.toastCtrl.create({
+      message: 'Fallo al obtener recursos',
+      duration: 3000
+    });
+    toast.present();
   }
 
 }

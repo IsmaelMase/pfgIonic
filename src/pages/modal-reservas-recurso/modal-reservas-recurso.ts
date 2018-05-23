@@ -22,6 +22,7 @@ export class ModalReservasRecursoPage {
   public buscador: any = "";
   public recurso: Recurso
   public reservas: Reserva[];
+  public reservasTotales: Reserva[];
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
     public toastCtrl: ToastController, public app: App, public loadingCtrl: LoadingController
@@ -40,17 +41,11 @@ export class ModalReservasRecursoPage {
   getReservas(refresher) {
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
-      content: 'Loading Please Wait...'
+      content: 'Cargando. Espere por favor'
     });
 
     loading.present();
-    let fechaSeleccionada;
-    if (this.buscador !== "") {
-      let fecha = this.buscador.split("-");
-      fechaSeleccionada = fecha[2] + "/" + fecha[1] + "/" + fecha[0];
-    } else {
-      fechaSeleccionada = "";
-    }
+    let fechaSeleccionada="";
 
     this._reservaService.getReservas(fechaSeleccionada, this.recurso.id).subscribe(
       (response: any) => {
@@ -60,6 +55,11 @@ export class ModalReservasRecursoPage {
           .sortBy('fechas_reservas[0]')
           .sortBy('intervalos_reservas[0]')
           .value();
+        this.reservasTotales = _(this.reservas).chain()
+          .sortBy('fechas_reservas[0]')
+          .sortBy('intervalos_reservas[0]')
+          .value();
+          this.getItems();
         if (refresher != null) {
           refresher.complete();
         }
@@ -85,9 +85,20 @@ export class ModalReservasRecursoPage {
   }
 
   getItems() {
-    let fecha = this.buscador.split("-");
-    let fechaSeleccionada = fecha[2] + "/" + fecha[1] + "/" + fecha[0];
-    this.reservas = this.reservas.filter((reserva: Reserva) => reserva.fechas_reservas[0] === fechaSeleccionada);
+    let fechaSeleccionada;
+    if (this.buscador !== "") {
+      let fecha = this.buscador.split("-");
+      fechaSeleccionada = fecha[2] + "/" + fecha[1] + "/" + fecha[0];
+      this.reservas = this.reservasTotales.filter((reserva: Reserva) => reserva.fechas_reservas[0] === fechaSeleccionada);
+    } else {
+      this.reservas=[...this.reservasTotales];
+    }
+
+  }
+
+  limpiar() {
+    this.buscador = "";
+    this.getItems();
   }
 
 }

@@ -6,7 +6,14 @@
 -->
 <ion-header>
   <ion-navbar color="corp">
-    <ion-title><span>Perfil</span></ion-title>
+    <ion-title>
+      <span>Perfil</span>
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only color="danger" (click)="logout()">
+        <ion-icon name="md-log-out"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 

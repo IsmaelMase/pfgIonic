@@ -21,6 +21,7 @@ import { RecursoProvider } from '../providers/recurso/recurso';
 import { ReservaProvider } from '../providers/reserva/reserva';
 import { ModalIncidenciaPage } from '../pages/modal-incidencia/modal-incidencia';
 import { ModalReservasRecursoPage } from '../pages/modal-reservas-recurso/modal-reservas-recurso';
+import { ModalAnotacionPage } from '../pages/modal-anotacion/modal-anotacion';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { ModalReservasRecursoPage } from '../pages/modal-reservas-recurso/modal-
     ModalReservaPage,
     LoginPage,
     ModalIncidenciaPage,
-    ModalReservasRecursoPage
+    ModalReservasRecursoPage,
+    ModalAnotacionPage
   ],
   imports: [
     BrowserModule,
@@ -53,7 +55,8 @@ import { ModalReservasRecursoPage } from '../pages/modal-reservas-recurso/modal-
     ModalReservaPage,
     LoginPage,
     ModalIncidenciaPage,
-    ModalReservasRecursoPage
+    ModalReservasRecursoPage,
+    ModalAnotacionPage
   ],
   providers: [
     StatusBar,

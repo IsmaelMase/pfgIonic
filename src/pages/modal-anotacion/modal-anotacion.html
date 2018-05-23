@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar color="corp">
+    <ion-title>
+      <span>Anotación</span>
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="white">Cancelar</span>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <div class="tituloRecurso">
+    <h5>
+      <b>Recurso: </b>{{reserva.recurso.nombre}}
+    </h5>
+    <h5>
+      <b>Facha: </b>{{reserva.fechas_reservas[0]}}
+    </h5><h5>
+      <b>Hora: </b>{{reserva.intervalos_reservas[0]}}
+    </h5>
+  </div>
+  <br>
+  <ion-list>
+    <ion-item>
+      <ion-label stacked>Incidencia</ion-label>
+      <ion-textarea rows="10" type="text" [(ngModel)]="reserva.anotacion"></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <button ion-button icon-left type="submit" (click)="realizarReserva()" block color="secondary">
+    <ion-icon name="md-checkmark"></ion-icon>
+    Guardar</button>
+</ion-content>
