@@ -10,27 +10,31 @@
       Mis Reservas
     </ion-title>
   </ion-toolbar>
+  <div>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-9>
+          <ion-list>
+            <ion-item>
+              <ion-label>Buscar por fecha</ion-label>
+              <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="buscador" (ngModelChange)="getItems()"></ion-datetime>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col col-3>
+          <div>
+            <button ion-button color="danger" clear (click)="limpiar()">Limpiar</button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <hr>
+  </div>
 </ion-header>
 
 
 <ion-content padding>
   <ion-grid>
-    <ion-row align-items-start>
-      <ion-col col-9>
-        <ion-list>
-          <ion-item>
-            <ion-label>Buscar por fecha</ion-label>
-            <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="buscador" (ngModelChange)="getItems()"></ion-datetime>
-          </ion-item>
-          <hr showWhen="android,windows">
-        </ion-list>
-      </ion-col>
-      <ion-col col-3>
-        <div>
-          <button ion-button color="danger" clear (click)="limpiar()">Limpiar</button>
-        </div>
-      </ion-col>
-    </ion-row>
     <ion-row>
       <ion-list>
         <ion-refresher (ionRefresh)="getReservas($event)">
