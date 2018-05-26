@@ -32,7 +32,7 @@
       <ion-item *ngFor="let recurso of recursos" (click)="abrirMenuOpciones(recurso)">
         <ion-avatar item-start>
           <img *ngIf="!recurso.imagen" src="assets/imgs/recurso.png">
-          <img *ngIf="recurso.imagen" src="http://192.168.43.45:8080/api/upload/files/{{recurso.imagen}}">
+          <img *ngIf="recurso.imagen" src="http://192.168.1.20:8080/api/upload/files/{{recurso.imagen}}">
         </ion-avatar>
         <h2>{{recurso.nombre}}</h2>
         <div *ngIf="recurso.capacidad">
