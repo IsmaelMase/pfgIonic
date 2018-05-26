@@ -52,6 +52,7 @@ export class ModalReservaPage {
       },
       (error: any) => {
         if (error.status === 403) {
+          localStorage.clear();
           this.app.getRootNav().setRoot(LoginPage);
         } else {
           this.mostrarMensajeIncorrecto();
@@ -78,6 +79,7 @@ export class ModalReservaPage {
       },
       (error: any) => {
         if (error.status == 403) {
+          localStorage.clear();
           this.app.getRootNav().setRoot(LoginPage);
         } else {
           this.mostrarMensajeIncorrecto();

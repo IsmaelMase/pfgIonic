@@ -22,7 +22,9 @@ import { ReservaProvider } from '../providers/reserva/reserva';
 import { ModalIncidenciaPage } from '../pages/modal-incidencia/modal-incidencia';
 import { ModalReservasRecursoPage } from '../pages/modal-reservas-recurso/modal-reservas-recurso';
 import { ModalAnotacionPage } from '../pages/modal-anotacion/modal-anotacion';
-
+import { Camera } from "@ionic-native/camera";
+import { File } from "@ionic-native/file";
+import { UploadProvider } from '../providers/upload/upload';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,10 @@ import { ModalAnotacionPage } from '../pages/modal-anotacion/modal-anotacion';
     LoginProvider,
     UsuarioProvider,
     RecursoProvider,
-    ReservaProvider
+    ReservaProvider,
+    Camera,
+    UploadProvider,
+    File
   ]
 })
 export class AppModule { }

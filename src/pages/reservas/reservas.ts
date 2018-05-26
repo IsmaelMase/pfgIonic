@@ -37,7 +37,7 @@ export class ReservasPage {
   }
 
   ionViewDidLoad() {
-    this.getReservas(null);
+    this.getReservas(null);  
   }
 
   eliminarReserva(id:string) {
@@ -48,6 +48,7 @@ export class ReservasPage {
       },
       (error:any) => {
         if (error.status === 403) {
+          localStorage.clear();
           this.app.getRootNav().setRoot(LoginPage);
         } else {
           this.mostrarMensajeIncorrectoEliminar();
@@ -85,7 +86,9 @@ export class ReservasPage {
         loading.dismiss();
       },
       (error: any) => {
-        if (error.status == 403) {
+        if (error.status === 403) {
+          localStorage.clear();
+          loading.dismiss();
           this.app.getRootNav().setRoot(LoginPage);
         } else {
           this.mostrarMensajeIncorrecto();
@@ -187,5 +190,4 @@ export class ReservasPage {
     this.buscador = "";
     this.getItems();
   }
-
 }

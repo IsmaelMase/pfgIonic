@@ -42,6 +42,7 @@ export class ModalIncidenciaPage {
       (error: any) => {
         console.log(error.status)
         if (error.status === 403) {
+          localStorage.clear();
           this.app.getRootNav().setRoot(LoginPage);
         } else {
           this.mostrarMensajeIncorrecto();

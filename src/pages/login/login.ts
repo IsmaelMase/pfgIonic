@@ -30,7 +30,7 @@ export class LoginPage {
     if (localStorage.getItem("token")) {
       this.navCtrl.setRoot(TabsPage);
     }
-    this.usuario = new Usuario("", "", "", "", "", "", "", [], "");
+    this.usuario = new Usuario("", "", "", "", "", "", "", [], "", "");
   }
 
   ionViewDidLoad() {

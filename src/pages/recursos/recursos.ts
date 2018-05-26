@@ -5,7 +5,6 @@ import { RecursoProvider } from '../../providers/recurso/recurso';
 import { Recurso } from '../../modelo/recurso';
 import { LoginPage } from '../login/login';
 import { ModalIncidenciaPage } from '../modal-incidencia/modal-incidencia';
-import { ModalReservasRecursoPageModule } from '../modal-reservas-recurso/modal-reservas-recurso.module';
 import { ModalReservasRecursoPage } from '../modal-reservas-recurso/modal-reservas-recurso';
 /**
  * Generated class for the RecursosPage page.
@@ -24,7 +23,7 @@ export class RecursosPage {
   public opciones: string;
   public recursos: Recurso[];
   public recursosTotales: Recurso[];
-  public buscador: string="";
+  public buscador: string = "";
   constructor(public _recursoService: RecursoProvider, public navCtrl: NavController, public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController, public platform: Platform,
     public modalCtrl: ModalController, public loadingCtrl: LoadingController, public app: App,
@@ -44,6 +43,7 @@ export class RecursosPage {
       content: 'Cargando. Espere por favor'
     });
     loading.present();
+    console.log(this.opciones);
     if (this.opciones === "aulas") {
       this._recursoService.getAulas().subscribe(
         (response: any) => {
@@ -58,6 +58,8 @@ export class RecursosPage {
         },
         (error: any) => {
           if (error.status == 403) {
+            localStorage.clear();
+            loading.dismiss();
             this.app.getRootNav().setRoot(LoginPage);
           } else {
             this.mostrarMensajeIncorrecto();
@@ -69,6 +71,7 @@ export class RecursosPage {
       this._recursoService.getOtros().subscribe(
         (response: any) => {
           this.recursos = response;
+          this.recursosTotales = response;
           console.log(this.recursos);
           this.getItems();
           if (refresher != null) {
@@ -78,6 +81,8 @@ export class RecursosPage {
         },
         (error: any) => {
           if (error.status == 403) {
+            loading.dismiss();
+            localStorage.clear();
             this.app.getRootNav().setRoot(LoginPage);
           } else {
             this.mostrarMensajeIncorrecto();

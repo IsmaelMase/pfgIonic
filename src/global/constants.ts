@@ -1,3 +1,3 @@
 export var CONSTANTS = {
-	url: 'http://localhost:8080/api/',
+	url: 'http://192.168.43.45:8080/api/',
 };

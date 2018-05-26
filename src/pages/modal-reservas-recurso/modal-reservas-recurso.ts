@@ -68,6 +68,8 @@ export class ModalReservasRecursoPage {
       },
       (error: any) => {
         if (error.status == 403) {
+          localStorage.clear();
+          loading.dismiss();
           this.app.getRootNav().setRoot(LoginPage);
         } else {
           this.mostrarMensajeIncorrecto();

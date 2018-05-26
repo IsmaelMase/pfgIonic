@@ -47,6 +47,7 @@ export class ModalAnotacionPage {
       },
       (error:any) => {
         if (error.status === 403) {
+          localStorage.clear();
           this.app.getRootNav().setRoot(LoginPage);
         } else {
           this.mostrarMensajeIncorrecto();
