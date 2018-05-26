@@ -44,7 +44,19 @@ import { UploadProvider } from '../providers/upload/upload';
     BrowserModule,
     HttpClientModule,
     HttpModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp,
+      {
+        platforms : {
+          ios : {
+            scrollAssist: false,   
+            autoFocusAssist: false  
+          },
+          android : {
+            scrollAssist: false,   
+            autoFocusAssist: false  
+          }
+        }
+      })
   ],
   bootstrap: [IonicApp],
   entryComponents: [

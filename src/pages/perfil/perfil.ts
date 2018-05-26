@@ -110,8 +110,6 @@ export class PerfilPage {
   saveUsuario() {
     if (this.nombreImagen !== undefined) {
       this.usuario.imagen = this.nombreImagen;
-    } else {
-      this.usuario.imagen = "";
     }
     this.usuario.password = btoa(this.usuario.password);
     this._usuarioService.saveUsuario(this.usuario).subscribe(
