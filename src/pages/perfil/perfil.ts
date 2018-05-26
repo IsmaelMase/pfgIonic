@@ -73,6 +73,7 @@ export class PerfilPage {
       let imgBlob = new Blob([reader.result], { type: file.type });
       this.formData.append('file', imgBlob, file.name);
       this.nombreImagen = file.name;
+      console.log("IMAGGEEEEN" + this.formData)
     };
     reader.readAsArrayBuffer(file);
   }
@@ -81,7 +82,7 @@ export class PerfilPage {
     if (this.formData !== undefined) {
       this.uploadService.saveImage(this.formData).subscribe(
         (response: any) => {
-          console.log(response);
+          console.log("RESPONSE" + response);
           if (response.status === 200) {
             this.saveUsuario();
           } else if (response.status === 403) {
@@ -125,7 +126,16 @@ export class PerfilPage {
         if (error.status === 403) {
           this.logout();
           this.app.getRootNav().setRoot(LoginPage);
+        } else if (error.status === 409) {
+          this.usuario.dni = JSON.parse(localStorage.getItem("usuario")).dni;
+          this.usuario.password = "";
+          this.mostrarMensajeDuplicado("NIF");
+        } else if (error.status === 406) {
+          this.usuario.email = JSON.parse(localStorage.getItem("usuario")).email;
+          this.usuario.password = "";
+          this.mostrarMensajeDuplicado("Email");
         } else {
+          this.usuario.password = "";
           this.mostrarMensajeIncorrecto();
         }
       }
@@ -151,6 +161,14 @@ export class PerfilPage {
   mostrarMensajeIncorrectoImagen() {
     let toast = this.toastCtrl.create({
       message: 'Error al guardar la imagen',
+      duration: 3000
+    });
+    toast.present();
+  }
+
+  mostrarMensajeDuplicado(campo: string) {
+    let toast = this.toastCtrl.create({
+      message: 'El campo ' + campo + ' ya esta registrado',
       duration: 3000
     });
     toast.present();

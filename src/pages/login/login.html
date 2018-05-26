@@ -1,24 +1,18 @@
-<!--
-  Generated template for the LoginPage page.
+<html class="login">
+<div class="wrapper fadeInDowns">
+  <div id="formContent">
+    <h2 class="active"> Login </h2>
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header class="bar-header">
-  <img src="assets/imgs/logoColegio.png" width="40%" height="23%" alt="">
-</ion-header>
-<ion-content padding class="login">
-  <form [formGroup]="loginForm" (ngSubmit)="conectar()">
-    <ion-item>
-      <ion-label floating>Email</ion-label>
-      <ion-input type="email" formControlName="email" [(ngModel)]="usuario.email"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label floating>Contraseña</ion-label>
-      <ion-input type="password" formControlName="password" [(ngModel)]="password"></ion-input>
-    </ion-item>
-    <button ion-button icon-left type="submit" [disabled]="!loginForm.valid" block color="secondary">
-      <ion-icon name="log-in"></ion-icon>
-      Entrar</button>
-  </form>
-</ion-content>
+    <div class="fadeIn first">
+      <img src="assets/imgs/logoColegio.png" width="40%" height="23%" alt="">
+    </div>
+
+    <form>
+      <input type="email" class="fadeIn second" name="email" [(ngModel)]="usuario.email" placeholder="Email">
+      <input type="password" class="fadeIn third" name="password" [(ngModel)]="password" placeholder="Contraseña">
+      <input (click)="conectar()" type="button" class="fadeIn fourth" value="Entrar">
+    </form>
+  </div>
+</div>
+
+</html>

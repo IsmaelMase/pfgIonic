@@ -18,7 +18,7 @@
   <ion-item>
     <ion-label>Buscar por fecha</ion-label>
     <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="buscador" (ngModelChange)="getItems()"></ion-datetime>
-    <button ion-button color="danger" clear (click)="limpiar()">Limpiar</button>
+    <button ion-button color="danger" clear (click)="limpiar()" item-right>Limpiar</button>
   </ion-item>
 </ion-header>
 
