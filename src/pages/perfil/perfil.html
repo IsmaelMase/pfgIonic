@@ -20,8 +20,8 @@
 
 <ion-content padding>
   <div (click)="selectPhoto()">
-    <img *ngIf="!usuario.imagen" src="assets/imgs/avatar.png">
-    <img *ngIf="usuario.imagen" src="http://192.168.43.45:8080/api/upload/files/{{usuario.imagen}}">
+    <img *ngIf="!usuario.imagen" src="assets/imgs/avatar.png" width="30%" height="30%">
+    <img *ngIf="usuario.imagen" src="http://192.168.43.45:8080/api/upload/files/{{usuario.imagen}}" width="30%" height="30%">
   </div>
   <form [formGroup]="usuarioForm" (ngSubmit)="upload()">
     <ion-grid>

@@ -16,11 +16,7 @@ export class UploadProvider {
     this.url = CONSTANTS.url;
   }
 
-  saveImage(file: any) {
-    let formdata: FormData = new FormData();
-
-    formdata.append('file', file);
-
+  saveImage(formdata: FormData) {
     return this.http.post(this.url + 'upload/saveFile', formdata)
   }
 
