@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CONSTANTS } from '../../global/constants';
 
@@ -16,12 +16,21 @@ export class LoginProvider {
     this.url = CONSTANTS.url;
   }
 
-  login(usuarioLogin: any){
+  login(usuarioLogin: any) {
     let json = JSON.stringify(usuarioLogin);
     console.log(json);
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return this.http.post(this.url + 'login', json, { headers: headers})
+    return this.http.post(this.url + 'login', json, { headers: headers });
+
+  }
+
+  changePassword(changePassUser: any) {
+    let json = JSON.stringify(changePassUser);
+    console.log(json);
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.post(this.url + 'mail/sendMail', json, { headers: headers });
 
   }
 

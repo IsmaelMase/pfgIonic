@@ -1,11 +1,3 @@
-page-login {
-
-}
-
-
-
-/* BASIC */
-
 html {
   background-color: rgb(204, 233, 241);
   width: 100%;
@@ -16,6 +8,19 @@ html {
 body {
   font-family: "Poppins", sans-serif;
   height: 100vh;
+}
+.parrafo{
+    font-size: 16px;
+    color: #4f95d3;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+  
+.parrafo:hover{
+   color: #1a4f7e;
 }
 .login{
     img{
@@ -156,9 +161,7 @@ body {
     input[type=text]:placeholder, input[type=password]:placeholder , input[type=email]:placeholder {
     color: #cccccc;
     }
-
-
-
+    
     /* ANIMATIONS */
 
     /* Simple CSS3 Fade-in-down Animation */

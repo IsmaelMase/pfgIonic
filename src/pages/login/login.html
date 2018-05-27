@@ -11,6 +11,9 @@
       <input type="email" class="fadeIn second" name="email" [(ngModel)]="usuario.email" placeholder="Email">
       <input type="password" class="fadeIn third" name="password" [(ngModel)]="password" placeholder="Contraseña">
       <input (click)="conectar()" type="button" class="fadeIn fourth" value="Entrar">
+      <div class="parrafo fadeIn third">
+        <p (click)="showAlertFogetPass()">He olvidado mi contraseña</p>
+      </div>
     </form>
   </div>
 </div>
