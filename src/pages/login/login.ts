@@ -98,7 +98,7 @@ export class LoginPage {
           }
         },
         {
-          text: 'Login',
+          text: 'Aceptar',
           handler: data => {
             if (data.email.includes("@") && data.email.includes(".")) {
               this.userChangePass.email = data.email;

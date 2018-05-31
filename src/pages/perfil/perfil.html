@@ -19,9 +19,9 @@
 
 
 <ion-content padding>
-  <div (click)="selectPhoto()">
+  <div class="imagenPerfil" (click)="selectPhoto()">
     <img *ngIf="!usuario.imagen" src="assets/imgs/avatar.png">
-    <img *ngIf="usuario.imagen" src="http://192.168.1.20:8080/api/upload/files/{{usuario.imagen}}">
+    <img *ngIf="usuario.imagen" src="http://localhost:8080/api/upload/files/{{usuario.imagen}}">
   </div>
   <form [formGroup]="usuarioForm" (ngSubmit)="upload()">
     <ion-grid>
@@ -57,16 +57,6 @@
             <ion-item>
               <ion-label floating>Teléfono</ion-label>
               <ion-input type="tel" formControlName="telefono" [(ngModel)]="usuario.telefono"></ion-input>
-            </ion-item>
-          </div>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <div>
-            <ion-item>
-              <ion-label floating>Contraseña</ion-label>
-              <ion-input type="password" formControlName="password" [(ngModel)]="usuario.password"></ion-input>
             </ion-item>
           </div>
         </ion-col>
