@@ -17,17 +17,14 @@ export class ReservaProvider {
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") });
 
-    return this.http.post(this.url + 'reserva/reservasByRecursoAndFecha/' + id, json, { headers: headers })
+    return this.http.post(this.url + 'reserva/reservasByRecursoAndFecha/' + id, json, { headers: headers });
 
   }
 
-  getReservasByUsuario(fecha: string, id: string) {
-    let json = JSON.stringify(fecha);
-
+  getReservasByUsuario(id: string, skip:number) {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") });
-
-    return this.http.post(this.url + 'reserva/reservasByUsuarioAndFecha/' + id, json, { headers: headers })
-  }
+    return this.http.get(this.url + 'reserva/reservasByUsuario/'+id+"/"+skip, { headers: headers });
+}
 
 
   getHorasDisponibles(fecha: string, id: string) {
@@ -36,7 +33,7 @@ export class ReservaProvider {
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") });
 
-    return this.http.post(this.url + 'reserva/getHorasNoDisponibles/' + id, json, { headers: headers })
+    return this.http.post(this.url + 'reserva/getHorasNoDisponibles/' + id, json, { headers: headers });
 
   }
 

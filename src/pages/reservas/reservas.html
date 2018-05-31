@@ -21,7 +21,7 @@
 <ion-content padding>
   <div>
     <ion-list>
-      <ion-refresher (ionRefresh)="getReservas($event)">
+      <ion-refresher (ionRefresh)="getReservas($event,null)">
         <ion-refresher-content></ion-refresher-content>
       </ion-refresher>
       <ion-item *ngFor="let reserva of reservas" (click)="abrirMenuOpciones(reserva)">
@@ -33,5 +33,8 @@
         <h4>{{reserva.fechas_reservas[0]}} {{reserva.intervalos_reservas[0]}}</h4>
       </ion-item>
     </ion-list>
+    <ion-infinite-scroll (ionInfinite)="getReservas(null,$event)" *ngIf="continue">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </div>
 </ion-content>

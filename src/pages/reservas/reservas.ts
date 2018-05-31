@@ -24,29 +24,31 @@ export class ReservasPage {
   public buscador: any = "";
   public recurso: Recurso;
   public usuario: Usuario;
-  public reservas: Reserva[];
-  public reservasTotales: Reserva[];
+  public reservas: Reserva[] = [];
+  public reservasTotales: Reserva[] = [];
+  public skip: number = -1;
+  public continue:boolean=true;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
     public toastCtrl: ToastController, public app: App, public loadingCtrl: LoadingController,
-    public platform: Platform, public modalCtrl:ModalController, public actionSheetCtrl:ActionSheetController,
-    public alertCtrl:AlertController
+    public platform: Platform, public modalCtrl: ModalController, public actionSheetCtrl: ActionSheetController,
+    public alertCtrl: AlertController
   ) {
     this.recurso = navParams.get('recurso');
     this.usuario = JSON.parse(localStorage.getItem("usuario"));
   }
 
   ionViewDidLoad() {
-    this.getReservas(null);  
+    this.getReservas(null, null);
   }
 
-  eliminarReserva(id:string) {
+  eliminarReserva(id: string) {
     this._reservaService.removeReserva(id).subscribe(
-      (response:any) => {
+      (response: any) => {
         console.log(response)
         this.mostrarMensajeCorrecto();
       },
-      (error:any) => {
+      (error: any) => {
         if (error.status === 403) {
           localStorage.clear();
           this.app.getRootNav().setRoot(LoginPage);
@@ -57,7 +59,11 @@ export class ReservasPage {
     );
   }
 
-  getReservas(refresher) {
+  getReservas(refresher, infiniteScroll) {
+    this.skip = this.skip + 1;
+    if (refresher != null) {
+      this.skip=0;
+    }
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
       content: 'Cargando. Espere por favor'
@@ -65,22 +71,27 @@ export class ReservasPage {
 
     loading.present();
     let fechaSeleccionada = "";
-
-    this._reservaService.getReservasByUsuario(fechaSeleccionada, this.usuario.id).subscribe(
+    console.log(this.skip);
+    this._reservaService.getReservasByUsuario(this.usuario.id, this.skip).subscribe(
       (response: any) => {
-        this.reservas = response;
-        console.log(this.reservas);
-        this.reservas = _(this.reservas).chain()
-          .sortBy('fechas_reservas[0]')
-          .sortBy('intervalos_reservas[0]')
-          .value();
-        this.reservasTotales = _(this.reservas).chain()
-          .sortBy('fechas_reservas[0]')
-          .sortBy('intervalos_reservas[0]')
-          .value();
-          this.getItems();
+        console.log(response.length);
+        if(response.length>0){
+          this.continue=true
+        }else{
+          this.continue=false;
+        }
+        for (let reserva in response) {
+          let fechaSeparada=response[reserva].fechas_reservas[0].split("/")
+          response[reserva].fechas_reservas[0]=fechaSeparada[2]+"/"+fechaSeparada[1]+"/"+fechaSeparada[0];
+          this.reservasTotales.push(response[reserva]);
+        }
+        this.reservas=[...this.reservasTotales];
+        this.getItems();
         if (refresher != null) {
           refresher.complete();
+        }
+        if (infiniteScroll != null) {
+          infiniteScroll.complete();
         }
 
         loading.dismiss();
@@ -127,12 +138,11 @@ export class ReservasPage {
     let fechaSeleccionada;
     if (this.buscador !== "") {
       let fecha = this.buscador.split("-");
-      fechaSeleccionada = fecha[2] + "/" + fecha[1] + "/" + fecha[0];
+      fechaSeleccionada = fecha[0] + "/" + fecha[1] + "/" + fecha[1];
       this.reservas = this.reservasTotales.filter((reserva: Reserva) => reserva.fechas_reservas[0] === fechaSeleccionada);
     } else {
       this.reservas = [...this.reservasTotales];
     }
-
   }
 
   abrirMenuOpciones(reserva) {
@@ -157,7 +167,6 @@ export class ReservasPage {
           role: 'cancel',
           icon: !this.platform.is('ios') ? 'md-close' : null,
           handler: () => {
-            console.log('Reserva clicked');
           }
         }
       ]
