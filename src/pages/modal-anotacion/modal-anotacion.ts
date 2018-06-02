@@ -20,13 +20,13 @@ export class ModalAnotacionPage {
 
   public reserva: Reserva;
   public horasDisponibles: string[];
+  public fecha:string;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
     public toastCtrl: ToastController, public app: App
   ) {
     
     this.reserva = this.navParams.get("reserva");
-    
   }
 
   ionViewDidLoad() {
@@ -38,6 +38,7 @@ export class ModalAnotacionPage {
   }
 
   realizarReserva() {
+   
     console.log(this.reserva);
     this._reservaService.addReserva(this.reserva).subscribe(
       (response:any) => {

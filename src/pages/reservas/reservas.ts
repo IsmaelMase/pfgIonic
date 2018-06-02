@@ -27,7 +27,7 @@ export class ReservasPage {
   public reservas: Reserva[] = [];
   public reservasTotales: Reserva[] = [];
   public skip: number = -1;
-  public continue:boolean=true;
+  public continue: boolean = true;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
     public toastCtrl: ToastController, public app: App, public loadingCtrl: LoadingController,
@@ -46,6 +46,7 @@ export class ReservasPage {
     this._reservaService.removeReserva(id).subscribe(
       (response: any) => {
         console.log(response)
+        this.limpiar();
         this.mostrarMensajeCorrecto();
       },
       (error: any) => {
@@ -62,7 +63,9 @@ export class ReservasPage {
   getReservas(refresher, infiniteScroll) {
     this.skip = this.skip + 1;
     if (refresher != null) {
-      this.skip=0;
+      this.reservas = [];
+      this.reservasTotales = [];
+      this.skip = 0;
     }
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
@@ -70,23 +73,19 @@ export class ReservasPage {
     });
 
     loading.present();
-    let fechaSeleccionada = "";
     console.log(this.skip);
-    this._reservaService.getReservasByUsuario(this.usuario.id, this.skip).subscribe(
+    this._reservaService.getReservasByUsuario(this.usuario.id, this.skip, this.buscador).subscribe(
       (response: any) => {
         console.log(response.length);
-        if(response.length>0){
-          this.continue=true
-        }else{
-          this.continue=false;
+        if (response.length > 0) {
+          this.continue = true
+        } else {
+          this.continue = false;
         }
         for (let reserva in response) {
-          let fechaSeparada=response[reserva].fechas_reservas[0].split("/")
-          response[reserva].fechas_reservas[0]=fechaSeparada[2]+"/"+fechaSeparada[1]+"/"+fechaSeparada[0];
           this.reservasTotales.push(response[reserva]);
         }
-        this.reservas=[...this.reservasTotales];
-        this.getItems();
+        this.reservas = [...this.reservasTotales];
         if (refresher != null) {
           refresher.complete();
         }
@@ -99,10 +98,24 @@ export class ReservasPage {
       (error: any) => {
         if (error.status === 403) {
           localStorage.clear();
+          if (refresher != null) {
+            refresher.complete();
+          }
+          if (infiniteScroll != null) {
+            infiniteScroll.complete();
+          }
+
           loading.dismiss();
           this.app.getRootNav().setRoot(LoginPage);
         } else {
           this.mostrarMensajeIncorrecto();
+          if (refresher != null) {
+            refresher.complete();
+          }
+          if (infiniteScroll != null) {
+            infiniteScroll.complete();
+          }
+
           loading.dismiss();
         }
         console.log(error);
@@ -134,16 +147,15 @@ export class ReservasPage {
     toast.present();
   }
 
-  getItems() {
-    let fechaSeleccionada;
-    if (this.buscador !== "") {
-      let fecha = this.buscador.split("-");
-      fechaSeleccionada = fecha[0] + "/" + fecha[1] + "/" + fecha[1];
-      this.reservas = this.reservasTotales.filter((reserva: Reserva) => reserva.fechas_reservas[0] === fechaSeleccionada);
-    } else {
-      this.reservas = [...this.reservasTotales];
-    }
-  }
+  // getItems() {
+  //   let fechaSeleccionada;
+  //   if (this.buscador !== "") {
+  //     let fecha = this.buscador.split("-");
+  //     this.reservas = this.reservasTotales.filter((reserva: Reserva) => reserva.fechas_reservas[0] === fechaSeleccionada);
+  //   } else {
+  //     this.reservas = [...this.reservasTotales];
+  //   }
+  // }
 
   abrirMenuOpciones(reserva) {
     let actionSheet = this.actionSheetCtrl.create({
@@ -197,6 +209,13 @@ export class ReservasPage {
 
   limpiar() {
     this.buscador = "";
-    this.getItems();
+    this.seleccionarFecha();
+  }
+  seleccionarFecha() {
+    this.skip = -1;
+    console.log(this.buscador);
+    this.reservas = [];
+    this.reservasTotales = [];
+    this.getReservas(null, null);
   }
 }

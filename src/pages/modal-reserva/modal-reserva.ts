@@ -25,6 +25,7 @@ export class ModalReservaPage {
   public reserva: Reserva;
   public usuario: Usuario;
   public horasDisponibles: string[];
+  public doingReserva:boolean=false;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
     public toastCtrl: ToastController, public app: App) {
@@ -42,6 +43,7 @@ export class ModalReservaPage {
   }
 
   realizarReserva() {
+    this.doingReserva=true;
     this.selectCurso(this.reserva.curso);
     console.log(this.reserva);
     this._reservaService.addReserva(this.reserva).subscribe(
@@ -49,14 +51,18 @@ export class ModalReservaPage {
         console.log(response)
         this.mostrarMensajeCorrecto();
         this.dismiss();
+        this.doingReserva=false;
       },
       (error: any) => {
         if (error.status === 403) {
           localStorage.clear();
           this.app.getRootNav().setRoot(LoginPage);
+        }else if(error.status === 409){
+          console.log(error);
         } else {
           this.mostrarMensajeIncorrecto();
         }
+        this.doingReserva=false;
       }
     );
   }
@@ -69,8 +75,8 @@ export class ModalReservaPage {
 
   getHorasDisponibles() {
     let fecha = this.reserva.fechas_reservas[0].split("-");
-    this.reserva.fechas_reservas[0] = fecha[2] + "/" + fecha[1] + "/" + fecha[0];
-    let fechaSeleccionada = fecha[2] + "/" + fecha[1] + "/" + fecha[0];
+    this.reserva.fechas_reservas[0] = fecha[0] + "/" + fecha[1] + "/" + fecha[2];
+    let fechaSeleccionada = fecha[0] + "/" + fecha[1] + "/" + fecha[2];
     this._reservaService.getHorasDisponibles(fechaSeleccionada, this.recurso.id).subscribe(
       (response: any) => {
 

@@ -11,21 +11,17 @@ export class ReservaProvider {
     this.url = CONSTANTS.url;
   }
 
-
-  getReservas(fecha: string, id: string) {
+  getReservasByUsuario(id: string, skip: number, fecha: string) {
     let json = JSON.stringify(fecha);
-
     let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") });
-
-    return this.http.post(this.url + 'reserva/reservasByRecursoAndFecha/' + id, json, { headers: headers });
-
+    return this.http.post(this.url + 'reserva/reservasByUsuario/' + id + "/" + skip, json, { headers: headers });
   }
 
-  getReservasByUsuario(id: string, skip:number) {
+  getReservasByRecurso(id: string, skip: number, fecha: string) {
+    let json = JSON.stringify(fecha);
     let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") });
-    return this.http.get(this.url + 'reserva/reservasByUsuario/'+id+"/"+skip, { headers: headers });
-}
-
+    return this.http.post(this.url + 'reserva/reservasByRecurso/' + id + "/" + skip, json, { headers: headers });
+  }
 
   getHorasDisponibles(fecha: string, id: string) {
     let json = JSON.stringify(fecha);

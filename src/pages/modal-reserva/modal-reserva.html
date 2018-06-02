@@ -55,7 +55,7 @@
     </ion-item>
   </ion-list>
 
-  <button ion-button icon-left type="button" (click)="realizarReserva()" [disabled]="!reserva.fechas_reservas[0] || !reserva.fechas_reservas[0] || !reserva.curso"
+  <button ion-button icon-left type="button" (click)="realizarReserva()" [disabled]="!reserva.fechas_reservas[0] || !reserva.fechas_reservas[0] || !reserva.curso || doingReserva"
     block color="secondary">
     <ion-icon name="md-checkmark"></ion-icon>
     Reservar</button>

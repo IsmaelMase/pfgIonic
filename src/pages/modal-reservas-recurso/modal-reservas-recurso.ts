@@ -21,8 +21,10 @@ import * as _ from 'underscore';
 export class ModalReservasRecursoPage {
   public buscador: any = "";
   public recurso: Recurso
-  public reservas: Reserva[];
-  public reservasTotales: Reserva[];
+  public reservas: Reserva[]=[];
+  public reservasTotales: Reserva[]=[];
+  public skip: number = -1;
+  public continue: boolean = true;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
     public toastCtrl: ToastController, public app: App, public loadingCtrl: LoadingController
@@ -31,37 +33,46 @@ export class ModalReservasRecursoPage {
   }
 
   ionViewDidLoad() {
-    this.getReservas(null);
+    this.getReservas(null, null);
   }
 
   dismiss() {
     this.viewCtrl.dismiss();
   }
 
-  getReservas(refresher) {
+  getReservas(refresher, infiniteScroll) {
+    this.skip = this.skip + 1;
+    if (refresher != null) {
+      this.reservas = [];
+      this.reservasTotales = [];
+      this.skip = 0;
+    }
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
       content: 'Cargando. Espere por favor'
     });
 
     loading.present();
-    let fechaSeleccionada="";
 
-    this._reservaService.getReservas(fechaSeleccionada, this.recurso.id).subscribe(
+    this._reservaService.getReservasByRecurso(this.recurso.id, this.skip, this.buscador).subscribe(
       (response: any) => {
-        this.reservas = response;
-        console.log(this.reservas);
-        this.reservas = _(this.reservas).chain()
-          .sortBy('fechas_reservas[0]')
-          .sortBy('intervalos_reservas[0]')
-          .value();
-        this.reservasTotales = _(this.reservas).chain()
-          .sortBy('fechas_reservas[0]')
-          .sortBy('intervalos_reservas[0]')
-          .value();
-          this.getItems();
+        console.log(response.length);
+        if (response.length > 0) {
+          this.continue = true
+        } else {
+          this.continue = false;
+        }
+        for (let reserva in response) {
+          let fechaSeparada = response[reserva].fechas_reservas[0].split("/")
+          response[reserva].fechas_reservas[0] = fechaSeparada[2] + "/" + fechaSeparada[1] + "/" + fechaSeparada[0];
+          this.reservasTotales.push(response[reserva]);
+        }
+        this.reservas = [...this.reservasTotales];
         if (refresher != null) {
           refresher.complete();
+        }
+        if (infiniteScroll != null) {
+          infiniteScroll.complete();
         }
 
         loading.dismiss();
@@ -69,9 +80,24 @@ export class ModalReservasRecursoPage {
       (error: any) => {
         if (error.status == 403) {
           localStorage.clear();
+          if (refresher != null) {
+            refresher.complete();
+          }
+          if (infiniteScroll != null) {
+            infiniteScroll.complete();
+          }
+
           loading.dismiss();
           this.app.getRootNav().setRoot(LoginPage);
         } else {
+          if (refresher != null) {
+            refresher.complete();
+          }
+          if (infiniteScroll != null) {
+            infiniteScroll.complete();
+          }
+
+          loading.dismiss();
           this.mostrarMensajeIncorrecto();
         }
         console.log(error);
@@ -86,21 +112,28 @@ export class ModalReservasRecursoPage {
     toast.present();
   }
 
-  getItems() {
-    let fechaSeleccionada;
-    if (this.buscador !== "") {
-      let fecha = this.buscador.split("-");
-      fechaSeleccionada = fecha[2] + "/" + fecha[1] + "/" + fecha[0];
-      this.reservas = this.reservasTotales.filter((reserva: Reserva) => reserva.fechas_reservas[0] === fechaSeleccionada);
-    } else {
-      this.reservas=[...this.reservasTotales];
-    }
+  // getItems() {
+  //   let fechaSeleccionada;
+  //   if (this.buscador !== "") {
+  //     let fecha = this.buscador.split("-");
+  //     fechaSeleccionada = fecha[2] + "/" + fecha[1] + "/" + fecha[0];
+  //     this.reservas = this.reservasTotales.filter((reserva: Reserva) => reserva.fechas_reservas[0] === fechaSeleccionada);
+  //   } else {
+  //     this.reservas=[...this.reservasTotales];
+  //   }
 
-  }
+  // }
 
   limpiar() {
     this.buscador = "";
-    this.getItems();
+    this.seleccionarFecha();
+  }
+  seleccionarFecha() {
+    this.skip = -1;
+    console.log(this.buscador);
+    this.reservas = [];
+    this.reservasTotales = [];
+    this.getReservas(null, null);
   }
 
 }

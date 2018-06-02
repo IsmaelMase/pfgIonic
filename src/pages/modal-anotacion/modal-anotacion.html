@@ -18,7 +18,7 @@
       <b>Recurso: </b>{{reserva.recurso.nombre}}
     </h5>
     <h5>
-      <b>Facha: </b>{{reserva.fechas_reservas[0]}}
+      <b>Facha: </b>{{reserva.fechas_reservas[0] | date: 'dd/MM/yyyy' }}
     </h5><h5>
       <b>Hora: </b>{{reserva.intervalos_reservas[0]}}
     </h5>
@@ -26,7 +26,7 @@
   <br>
   <ion-list>
     <ion-item>
-      <ion-label stacked>Incidencia</ion-label>
+      <ion-label stacked>Anotación</ion-label>
       <ion-textarea rows="10" type="text" [(ngModel)]="reserva.anotacion"></ion-textarea>
     </ion-item>
   </ion-list>

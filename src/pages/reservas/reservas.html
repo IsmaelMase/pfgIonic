@@ -12,7 +12,7 @@
   </ion-toolbar>
   <ion-item>
     <ion-label>Buscar por fecha</ion-label>
-    <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="buscador" (ngModelChange)="getItems()"></ion-datetime>
+    <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" [(ngModel)]="buscador" (ngModelChange)="seleccionarFecha()"></ion-datetime>
     <button ion-button color="danger" clear (click)="limpiar()" item-right>Limpiar</button>
   </ion-item>
 </ion-header>
@@ -30,7 +30,7 @@
         </ion-avatar>
         <h2>{{reserva.recurso.nombre}}</h2>
         <h3>{{reserva.curso.nombre}}</h3>
-        <h4>{{reserva.fechas_reservas[0]}} {{reserva.intervalos_reservas[0]}}</h4>
+        <h4>{{reserva.fechas_reservas[0] | date: 'dd/MM/yyyy'}} {{reserva.intervalos_reservas[0]}}</h4>
       </ion-item>
     </ion-list>
     <ion-infinite-scroll (ionInfinite)="getReservas(null,$event)" *ngIf="continue">
