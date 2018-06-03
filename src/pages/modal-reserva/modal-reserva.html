@@ -27,7 +27,7 @@
     <ion-item>
       <ion-label>Fecha</ion-label>
       <ion-datetime displayFormat="DD MMM YYYY" pickerFormat="DD MMM YYYY" name="fecha" [(ngModel)]="reserva.fechas_reservas[0]"
-        (ngModelChange)="getHorasDisponibles()"></ion-datetime>
+        (ngModelChange)="getHorasDisponibles()" min="{{minDate}}" max="{{maxDate}}"></ion-datetime>
     </ion-item>
 
 

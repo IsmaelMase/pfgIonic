@@ -6,6 +6,7 @@ import { Usuario } from '../../modelo/usuario';
 import { Curso } from '../../modelo/curso';
 import { ReservaProvider } from '../../providers/reserva/reserva';
 import { LoginPage } from '../login/login';
+import * as moment from 'moment';
 
 /**
  * Generated class for the ModalReservaPage page.
@@ -26,10 +27,15 @@ export class ModalReservaPage {
   public usuario: Usuario;
   public horasDisponibles: string[];
   public doingReserva:boolean=false;
+  public maxDate;
+  public minDate;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
     public toastCtrl: ToastController, public app: App) {
     this.recurso = navParams.get('recurso');
+    this.maxDate=moment(this.recurso.intervalo.fecha_max).format("YYYY-MM-DD");
+    this.minDate=moment().format("YYYY-MM-DD");
+    console.log(moment(this.recurso.intervalo.fecha_max).format("YYYY-MM-DD"));
     this.usuario = JSON.parse(localStorage.getItem("usuario"));
     this.reserva = new Reserva("", [], [], this.usuario, this.recurso, null, "");
   }
