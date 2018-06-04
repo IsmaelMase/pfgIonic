@@ -65,6 +65,7 @@ export class ModalReservaPage {
           this.app.getRootNav().setRoot(LoginPage);
         } else if (error.status === 409) {
           this.mostrarMensajeConflicto()
+          this.doingReserva = false;
         } else {
           this.mostrarMensajeIncorrecto();
         }

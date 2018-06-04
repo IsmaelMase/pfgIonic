@@ -9,13 +9,6 @@ import { UploadProvider } from '../../providers/upload/upload';
 import { File, FileEntry } from '@ionic-native/file';
 import { CONSTANTS } from '../../global/constants';
 
-/**
- * Generated class for the PerfilPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-perfil',
@@ -118,7 +111,7 @@ export class PerfilPage {
         this.mostrarMensajeCorrecto();
         localStorage.setItem("usuario", JSON.stringify(response));
         this.usuario = response;
-        this.usuario.password = "";
+        console.log(this.usuario);
         this.formData = undefined;
       },
       (error: any) => {

@@ -4,7 +4,7 @@ import { Recurso } from '../../modelo/recurso';
 import { ReservaProvider } from '../../providers/reserva/reserva';
 import { Reserva } from '../../modelo/reserva';
 import { LoginPage } from '../login/login';
-import * as _ from 'underscore';
+import * as moment from 'moment';
 import { Usuario } from '../../modelo/usuario';
 import { ModalAnotacionPage } from '../modal-anotacion/modal-anotacion';
 
@@ -21,13 +21,15 @@ import { ModalAnotacionPage } from '../modal-anotacion/modal-anotacion';
   templateUrl: 'reservas.html',
 })
 export class ReservasPage {
-  public buscador: any = "";
+  public buscador: any =  moment().format("YYYY-MM-DD");
   public recurso: Recurso;
   public usuario: Usuario;
   public reservas: Reserva[] = [];
   public reservasTotales: Reserva[] = [];
   public skip: number = -1;
   public continue: boolean = true;
+  public minDate= moment().format("YYYY-MM-DD");
+  public maxDate=moment().add(2,'years').format("YYYY-MM-DD");
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
     public toastCtrl: ToastController, public app: App, public loadingCtrl: LoadingController,
@@ -39,8 +41,6 @@ export class ReservasPage {
   }
 
   ionViewDidLoad() {
-    this.reservas=[];
-    this.reservasTotales=[]
     this.getReservas(null, null);
   }
 
@@ -79,7 +79,7 @@ export class ReservasPage {
     this._reservaService.getReservasByUsuario(this.usuario.id, this.skip, this.buscador).subscribe(
       (response: any) => {
         console.log(response.length);
-        if (response.length > 0) {
+        if (response.length >= 20) {
           this.continue = true
         } else {
           this.continue = false;

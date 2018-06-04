@@ -44,19 +44,12 @@ import { UploadProvider } from '../providers/upload/upload';
     BrowserModule,
     HttpClientModule,
     HttpModule,
-    IonicModule.forRoot(MyApp,
-      {
-        platforms : {
-          ios : {
-            scrollAssist: false,   
-            autoFocusAssist: false  
-          },
-          android : {
-            scrollAssist: false,   
-            autoFocusAssist: false  
-          }
-        }
-      })
+    IonicModule.forRoot(MyApp, {
+      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+      monthShortNames: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+      dayNames: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+      dayShortNames: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb" ],
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -4,7 +4,7 @@ import { Recurso } from '../../modelo/recurso';
 import { ReservaProvider } from '../../providers/reserva/reserva';
 import { Reserva } from '../../modelo/reserva';
 import { LoginPage } from '../login/login';
-import * as _ from 'underscore';
+import * as moment from 'moment';
 
 /**
  * Generated class for the ModalReservasRecursoPage page.
@@ -19,12 +19,14 @@ import * as _ from 'underscore';
   templateUrl: 'modal-reservas-recurso.html',
 })
 export class ModalReservasRecursoPage {
-  public buscador: any = "";
+  public buscador: any = moment().format("YYYY-MM-DD");
   public recurso: Recurso
-  public reservas: Reserva[]=[];
-  public reservasTotales: Reserva[]=[];
+  public reservas: Reserva[] = [];
+  public reservasTotales: Reserva[] = [];
   public skip: number = -1;
   public continue: boolean = true;
+  public minDate = moment().format("YYYY-MM-DD");
+  public maxDate = moment().add(2, 'years').format("YYYY-MM-DD");
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
     public toastCtrl: ToastController, public app: App, public loadingCtrl: LoadingController
