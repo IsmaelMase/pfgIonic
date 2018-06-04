@@ -39,6 +39,8 @@ export class ReservasPage {
   }
 
   ionViewDidLoad() {
+    this.reservas=[];
+    this.reservasTotales=[]
     this.getReservas(null, null);
   }
 

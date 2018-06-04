@@ -26,15 +26,15 @@ export class ModalReservaPage {
   public reserva: Reserva;
   public usuario: Usuario;
   public horasDisponibles: string[];
-  public doingReserva:boolean=false;
+  public doingReserva: boolean = false;
   public maxDate;
   public minDate;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
     public toastCtrl: ToastController, public app: App) {
     this.recurso = navParams.get('recurso');
-    this.maxDate=moment(this.recurso.intervalo.fecha_max).format("YYYY-MM-DD");
-    this.minDate=moment().format("YYYY-MM-DD");
+    this.maxDate = moment(this.recurso.intervalo.fecha_max).format("YYYY-MM-DD");
+    this.minDate = moment().format("YYYY-MM-DD");
     console.log(moment(this.recurso.intervalo.fecha_max).format("YYYY-MM-DD"));
     this.usuario = JSON.parse(localStorage.getItem("usuario"));
     this.reserva = new Reserva("", [], [], this.usuario, this.recurso, null, "");
@@ -49,7 +49,7 @@ export class ModalReservaPage {
   }
 
   realizarReserva() {
-    this.doingReserva=true;
+    this.doingReserva = true;
     this.selectCurso(this.reserva.curso);
     console.log(this.reserva);
     this._reservaService.addReserva(this.reserva).subscribe(
@@ -57,18 +57,18 @@ export class ModalReservaPage {
         console.log(response)
         this.mostrarMensajeCorrecto();
         this.dismiss();
-        this.doingReserva=false;
+        this.doingReserva = false;
       },
       (error: any) => {
         if (error.status === 403) {
           localStorage.clear();
           this.app.getRootNav().setRoot(LoginPage);
-        }else if(error.status === 409){
-          console.log(error);
+        } else if (error.status === 409) {
+          this.mostrarMensajeConflicto()
         } else {
           this.mostrarMensajeIncorrecto();
         }
-        this.doingReserva=false;
+        this.doingReserva = false;
       }
     );
   }
@@ -111,6 +111,14 @@ export class ModalReservaPage {
   mostrarMensajeCorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Reserva realizada correctamente',
+      duration: 3000
+    });
+    toast.present();
+  }
+
+  mostrarMensajeConflicto() {
+    let toast = this.toastCtrl.create({
+      message: 'Reserva ocupada por otro usuario',
       duration: 3000
     });
     toast.present();

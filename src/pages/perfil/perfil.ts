@@ -7,6 +7,7 @@ import { LoginPage } from '../login/login';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { UploadProvider } from '../../providers/upload/upload';
 import { File, FileEntry } from '@ionic-native/file';
+import { CONSTANTS } from '../../global/constants';
 
 /**
  * Generated class for the PerfilPage page.
@@ -28,6 +29,7 @@ export class PerfilPage {
   public foto: any;
   public formData: FormData;
   public nombreImagen: string;
+  public url=CONSTANTS.url;
   constructor(public _usuarioService: UsuarioProvider, public toastCtrl: ToastController, public navCtrl: NavController, public navParams: NavParams,
     private fb: FormBuilder, public app: App, private camera: Camera, private uploadService: UploadProvider, private file: File) {
     this.usuarioForm = this.fb.group({

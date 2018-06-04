@@ -6,12 +6,8 @@ import { Recurso } from '../../modelo/recurso';
 import { LoginPage } from '../login/login';
 import { ModalIncidenciaPage } from '../modal-incidencia/modal-incidencia';
 import { ModalReservasRecursoPage } from '../modal-reservas-recurso/modal-reservas-recurso';
-/**
- * Generated class for the RecursosPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { CONSTANTS } from '../../global/constants';
+
 
 @IonicPage()
 @Component({
@@ -24,6 +20,7 @@ export class RecursosPage {
   public recursos: Recurso[];
   public recursosTotales: Recurso[];
   public buscador: string = "";
+  public url=CONSTANTS.url;
   constructor(public _recursoService: RecursoProvider, public navCtrl: NavController, public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController, public platform: Platform,
     public modalCtrl: ModalController, public loadingCtrl: LoadingController, public app: App,

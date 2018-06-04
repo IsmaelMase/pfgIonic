@@ -48,9 +48,13 @@ export class LoginPage {
     this._loginService.login(this.usuario).subscribe(
       (response: any) => {
         console.log(response.authorization);
-        localStorage.setItem("token", response.authorization);
-        localStorage.setItem("usuario", JSON.stringify(response.usuario))
-        this.navCtrl.setRoot(TabsPage);
+        if (response.usuario.rol === 'ROL_PROFESOR') {
+          localStorage.setItem("token", response.authorization);
+          localStorage.setItem("usuario", JSON.stringify(response.usuario))
+          this.navCtrl.setRoot(TabsPage);
+        } else {
+          this.mostrarMensajeIncorrecto();
+        }
       },
       (error: any) => {
         console.log(error.status);

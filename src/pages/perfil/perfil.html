@@ -21,7 +21,7 @@
 <ion-content padding>
   <div class="imagenPerfil" (click)="selectPhoto()">
     <img *ngIf="!usuario.imagen" src="assets/imgs/avatar.png">
-    <img *ngIf="usuario.imagen" src="http://localhost:8080/api/upload/files/{{usuario.imagen}}">
+    <img *ngIf="usuario.imagen" src="{{url}}upload/files/{{usuario.imagen}}">
   </div>
   <form [formGroup]="usuarioForm" (ngSubmit)="upload()">
     <ion-grid>
