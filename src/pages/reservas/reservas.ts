@@ -7,6 +7,8 @@ import { LoginPage } from '../login/login';
 import * as moment from 'moment';
 import { Usuario } from '../../modelo/usuario';
 import { ModalAnotacionPage } from '../modal-anotacion/modal-anotacion';
+import { ViewChild } from '@angular/core';
+import { Slides } from 'ionic-angular';
 
 /**
  * Generated class for the ModalReservasRecursoPage page.
@@ -21,15 +23,21 @@ import { ModalAnotacionPage } from '../modal-anotacion/modal-anotacion';
   templateUrl: 'reservas.html',
 })
 export class ReservasPage {
-  public buscador: any =  moment().format("YYYY-MM-DD");
+  @ViewChild(Slides) slides: Slides;
+
+  public buscador: any = moment().format("YYYY-MM-DD");
+  public fechasBusqueda: string[];
+  public fechasArray: string[] = [];
   public recurso: Recurso;
   public usuario: Usuario;
   public reservas: Reserva[] = [];
   public reservasTotales: Reserva[] = [];
   public skip: number = -1;
   public continue: boolean = true;
-  public minDate= moment().format("YYYY-MM-DD");
-  public maxDate=moment().add(2,'years').format("YYYY-MM-DD");
+  public minDate = moment().format("YYYY-MM-DD");
+  public maxDate = moment().add(2, 'years').format("YYYY-MM-DD");
+  public slidePos: number = 0;
+  public fechaMostrar: string;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
     public toastCtrl: ToastController, public app: App, public loadingCtrl: LoadingController,
@@ -38,16 +46,17 @@ export class ReservasPage {
   ) {
     this.recurso = navParams.get('recurso');
     this.usuario = JSON.parse(localStorage.getItem("usuario"));
+    moment.locale('es');
   }
 
   ionViewDidLoad() {
+    this.getWeek();
     this.getReservas(null, null);
   }
 
   eliminarReserva(id: string) {
     this._reservaService.removeReserva(id).subscribe(
       (response: any) => {
-        console.log(response)
         this.limpiar();
         this.mostrarMensajeCorrecto();
       },
@@ -76,10 +85,10 @@ export class ReservasPage {
 
     loading.present();
     console.log(this.skip);
-    this._reservaService.getReservasByUsuario(this.usuario.id, this.skip, this.buscador).subscribe(
+    this._reservaService.getReservasByUsuario(this.usuario.id, this.skip, this.fechasArray[this.slidePos]).subscribe(
       (response: any) => {
         console.log(response.length);
-        if (response.length >= 20) {
+        if (response.length >= 60) {
           this.continue = true
         } else {
           this.continue = false;
@@ -210,14 +219,64 @@ export class ReservasPage {
   }
 
   limpiar() {
-    this.buscador = "";
-    this.seleccionarFecha();
+    this.skip = -1;
+    console.log(this.buscador);
+    this.reservas = [];
+    this.reservasTotales = [];
+    this.getReservas(null, null);
   }
   seleccionarFecha() {
     this.skip = -1;
     console.log(this.buscador);
     this.reservas = [];
     this.reservasTotales = [];
+    this.fechasArray = [];
+    this.getWeek();
+  }
+
+  getWeek() {
+    console.log(moment(this.buscador).day());
+    let diaSemana = (moment(this.buscador).day() - 1) * -1;
+    if (moment(this.buscador).day() !== 0 && moment(this.buscador).day() !== 6) {
+      this.fechasBusqueda = [];
+      // let numeroUltimoDia = 4 - (diaSemana * -1);
+      let primerDia = moment(this.buscador).add(diaSemana, "days").format("YYYY-MM-DD");
+      // let ultimoDia = moment(this.buscador).add(numeroUltimoDia, "days").format("YYYY-MM-DD");
+      this.getAllDayWeek(primerDia);
+      // this.fechasBusqueda.push(primerDia);
+      // this.fechasBusqueda.push(ultimoDia);
+      // this.getReservas(null, null);
+    } else {
+      this.reservasTotales = [];
+      this.reservas = [];
+    }
+  }
+
+  getAllDayWeek(diaInicial) {
+    this.fechasArray = [];
+    this.fechasArray.push(diaInicial);
+    for (let i = 1; i < 5; i++) {
+      this.fechasArray.push(moment(diaInicial).add(i, "days").format("YYYY-MM-DD"))
+    }
+
+    if (this.slides !== undefined) {
+      this.slides.slideTo(0);
+      this.fechaMostrar = moment(this.fechasArray[0]).format('dddd  DD MMMM YYYY ');
+    } else {
+      this.fechaMostrar = moment(this.fechasArray[this.slidePos]).format('dddd  DD MMMM YYYY ');
+    }
     this.getReservas(null, null);
+  }
+
+  getFechaSlider() {
+    this.slidePos = this.slides.getActiveIndex()
+    if (this.slidePos !== 5) {
+      this.skip = -1;
+      this.reservas = [];
+      this.reservasTotales = [];
+      console.log(this.slidePos);
+      this.fechaMostrar = moment(this.fechasArray[this.slidePos]).format('dddd  DD MMMM YYYY ');
+      this.getReservas(null, null);
+    }
   }
 }

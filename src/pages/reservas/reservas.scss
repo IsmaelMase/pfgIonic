@@ -2,9 +2,19 @@ page-reservas {
 
 }
 ion-grid {
-    height: 100%;
-  
-    ion-row {
-      height: 33.33%;
-    }
+  height: 100%;
+
+  ion-row {
+    height: 33.33%;
   }
+}
+ion-slides {
+  height: auto;
+}
+.divSlide{
+  height: 300px;
+}
+
+.divSlide2{
+  height: 200px;
+}

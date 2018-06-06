@@ -12,14 +12,14 @@
   </ion-toolbar>
   <ion-item>
     <ion-label>Buscar por fecha</ion-label>
-    <ion-datetime displayFormat="DD MMM YYYY" doneText="Elegir" cancelText="Cancelar" min="{{minDate}}" max={{maxDate}} pickerFormat="DD MMM YYYY" [(ngModel)]="buscador" (ngModelChange)="seleccionarFecha()"></ion-datetime>
+    <ion-datetime displayFormat="DDD, DD MMM YYYY" doneText="Elegir" cancelText="Cancelar" min="{{minDate}}" max={{maxDate}}
+      pickerFormat="DD MMM YYYY" [(ngModel)]="buscador" (ngModelChange)="seleccionarFecha()"></ion-datetime>
   </ion-item>
 </ion-header>
 
 
 <ion-content padding>
-  <div>
-    <ion-list>
+  <!--<ion-list>
       <ion-refresher (ionRefresh)="getReservas($event,null)">
         <ion-refresher-content></ion-refresher-content>
       </ion-refresher>
@@ -34,6 +34,32 @@
     </ion-list>
     <ion-infinite-scroll (ionInfinite)="getReservas(null,$event)" *ngIf="continue">
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-  </div>
+    </ion-infinite-scroll>-->
+  <ion-slides *ngIf="fechasArray.length>0" (ionSlideDidChange)="getFechaSlider()">
+    <ion-refresher (ionRefresh)="getReservas($event,null)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-slide *ngFor="let fecha of fechasArray">
+      <ion-list>
+        <ion-item-divider color="light">{{fechaMostrar}}</ion-item-divider>
+        <ion-item *ngFor="let reserva of reservas" (click)="abrirMenuOpciones(reserva)">
+          <ion-avatar item-start>
+            <img src="assets/imgs/calendario.png">
+          </ion-avatar>
+          <h2>{{reserva.recurso.nombre}}</h2>
+          <h3>{{reserva.curso.nombre}}</h3>
+          <h4>{{reserva.fechas_reservas[0] | date: 'dd/MM/yyyy'}} {{reserva.intervalos_reservas[0]}}</h4>
+        </ion-item>
+      </ion-list>
+
+      <ion-infinite-scroll (ionInfinite)="getReservas(null,$event)" *ngIf="continue">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+      <div *ngIf="reservas.length>0 && reservas.length<2" class="divSlide2">
+        </div>
+      <div *ngIf="reservas.length===0" class="divSlide">
+        No hay reservas
+      </div>
+    </ion-slide>
+  </ion-slides>
 </ion-content>
