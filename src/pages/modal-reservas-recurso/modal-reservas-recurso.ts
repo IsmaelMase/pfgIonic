@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ToastController, App, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ToastController, App, LoadingController, ActionSheetController, AlertController, ModalController } from 'ionic-angular';
 import { Recurso } from '../../modelo/recurso';
 import { ReservaProvider } from '../../providers/reserva/reserva';
 import { Reserva } from '../../modelo/reserva';
@@ -7,6 +7,7 @@ import { LoginPage } from '../login/login';
 import * as moment from 'moment';
 import { ViewChild } from '@angular/core';
 import { Slides } from 'ionic-angular';
+import { ModalReservaVaciaPage } from '../modal-reserva-vacia/modal-reserva-vacia';
 /**
  * Generated class for the ModalReservasRecursoPage page.
  *
@@ -36,7 +37,8 @@ export class ModalReservasRecursoPage {
   public fechaMostrar: string;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
-    public toastCtrl: ToastController, public app: App, public loadingCtrl: LoadingController
+    public toastCtrl: ToastController, public app: App, public loadingCtrl: LoadingController,
+    public actionSheetCtrl: ActionSheetController, public alertCtrl: AlertController, public modalCtrl: ModalController
   ) {
     this.recurso = navParams.get('recurso');
     moment.locale('es');
@@ -44,7 +46,6 @@ export class ModalReservasRecursoPage {
 
   ionViewDidLoad() {
     this.getWeek();
-    this.getReservas(null, null);
   }
 
   dismiss() {
@@ -53,6 +54,8 @@ export class ModalReservasRecursoPage {
 
   getReservas(refresher, infiniteScroll) {
     this.skip = this.skip + 1;
+    this.reservas = [];
+    this.reservasTotales = [];
     if (refresher != null) {
       this.reservas = [];
       this.reservasTotales = [];
@@ -67,15 +70,13 @@ export class ModalReservasRecursoPage {
 
     this._reservaService.getReservasByRecurso(this.recurso.id, this.skip, this.fechasArray[this.slidePos]).subscribe(
       (response: any) => {
-        console.log(response.length);
+        console.log(response);
         if (response.length >= 60) {
           this.continue = true
         } else {
           this.continue = false;
         }
         for (let reserva in response) {
-          let fechaSeparada = response[reserva].fechas_reservas[0].split("/")
-          response[reserva].fechas_reservas[0] = fechaSeparada[2] + "/" + fechaSeparada[1] + "/" + fechaSeparada[0];
           this.reservasTotales.push(response[reserva]);
         }
         this.reservas = [...this.reservasTotales];
@@ -149,6 +150,24 @@ export class ModalReservasRecursoPage {
     this.reservasTotales = [];
     this.fechasArray = [];
     this.getWeek();
+  }
+
+  mostrarAnotacionReserva(reserva: Reserva) {
+    const alert = this.alertCtrl.create({
+      title: 'Anotación',
+      subTitle: reserva.anotacion,
+      buttons: ['Cerrar']
+    });
+    alert.present();
+
+  }
+
+  abrirVentanaReserva(reserva) {
+    let modal = this.modalCtrl.create(ModalReservaVaciaPage, { 'reserva': reserva });
+    modal.onDidDismiss(data => {
+      this.getReservas(null, null);
+    });
+    modal.present();
   }
 
   getWeek() {

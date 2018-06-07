@@ -51,20 +51,31 @@
             {{fechaMostrar}}
 
           </ion-item-divider>
-          <ion-item *ngFor="let reserva of reservas">
-            <ion-avatar item-start>
-              <img src="assets/imgs/calendario.png">
-            </ion-avatar>
-            <h2>{{reserva.usuario.nombre}} {{reserva.usuario.apellido}}</h2>
-            <h3>{{reserva.curso.nombre}}</h3>
-            <h4>{{reserva.fechas_reservas[0]}} {{reserva.intervalos_reservas[0]}}</h4>
-          </ion-item>
+          <div *ngFor="let reserva of reservas">
+
+            <ion-item *ngIf="reserva.id" (click)="mostrarAnotacionReserva(reserva)">
+              <ion-avatar item-start>
+                <img src="assets/imgs/calendario.png">
+              </ion-avatar>
+              <h2 class="item">{{reserva.usuario.nombre}} {{reserva.usuario.apellido}}</h2>
+              <h3>{{reserva.curso.nombre}}</h3>
+              <h4>{{reserva.fechas_reservas[0]|date:'dd/MM/yyyy'}} {{reserva.intervalos_reservas[0]}}</h4>
+            </ion-item>
+            <ion-item *ngIf="!reserva.id" (click)="abrirVentanaReserva(reserva)">
+              <ion-avatar item-start>
+                <img src="assets/imgs/calendario.png">
+              </ion-avatar>
+              <h2 class="libre item">Reserva libre</h2>
+              <h4>{{reserva.fechas_reservas[0]|date:'dd/MM/yyyy'}} {{reserva.intervalos_reservas[0]}}</h4>
+            </ion-item>
+          </div>
+
         </ion-list>
 
       </div>
-      <ion-infinite-scroll (ionInfinite)="getReservas(null,$event)" *ngIf="continue">
+      <!--<ion-infinite-scroll (ionInfinite)="getReservas(null,$event)" *ngIf="continue">
         <ion-infinite-scroll-content></ion-infinite-scroll-content>
-      </ion-infinite-scroll>
+      </ion-infinite-scroll>-->
       <div *ngIf="reservas.length>0 && reservas.length<2" class="divSlide2">
       </div>
       <div *ngIf="reservas.length===0" class="divSlide">

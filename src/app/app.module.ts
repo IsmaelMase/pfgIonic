@@ -25,6 +25,7 @@ import { ModalAnotacionPage } from '../pages/modal-anotacion/modal-anotacion';
 import { Camera } from "@ionic-native/camera";
 import { File } from "@ionic-native/file";
 import { UploadProvider } from '../providers/upload/upload';
+import { ModalReservaVaciaPage } from '../pages/modal-reserva-vacia/modal-reserva-vacia';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { UploadProvider } from '../providers/upload/upload';
     LoginPage,
     ModalIncidenciaPage,
     ModalReservasRecursoPage,
-    ModalAnotacionPage
+    ModalAnotacionPage,
+    ModalReservaVaciaPage
   ],
   imports: [
     BrowserModule,
@@ -63,7 +65,8 @@ import { UploadProvider } from '../providers/upload/upload';
     LoginPage,
     ModalIncidenciaPage,
     ModalReservasRecursoPage,
-    ModalAnotacionPage
+    ModalAnotacionPage,
+    ModalReservaVaciaPage
   ],
   providers: [
     StatusBar,

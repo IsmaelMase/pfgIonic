@@ -46,6 +46,8 @@ export class RecursosPage {
         (response: any) => {
           this.recursos = response;
           this.recursosTotales = response;
+          this.recursos.sort(this.ordenarAZ);
+          this.recursosTotales.sort(this.ordenarAZ);
           console.log(this.recursos);
           this.getItems();
           if (refresher != null) {
@@ -69,6 +71,8 @@ export class RecursosPage {
         (response: any) => {
           this.recursos = response;
           this.recursosTotales = response;
+          this.recursos.sort(this.ordenarAZ);
+          this.recursosTotales.sort(this.ordenarAZ);
           console.log(this.recursos);
           this.getItems();
           if (refresher != null) {
@@ -130,6 +134,7 @@ export class RecursosPage {
 
   getItems() {
     this.recursos = this.recursosTotales.filter((recurso: Recurso) => recurso.nombre.toUpperCase().includes(this.buscador.toUpperCase()));
+    this.recursos.sort(this.ordenarAZ);
   }
 
   mostrarMensajeIncorrecto() {
@@ -138,6 +143,14 @@ export class RecursosPage {
       duration: 3000
     });
     toast.present();
+  }
+
+  ordenarAZ(a, b) {
+    if (a.nombre.toLowerCase() < b.nombre.toLowerCase())
+      return -1;
+    if (a.nombre.toLowerCase() > b.nombre.toLowerCase())
+      return 1;
+    return 0;
   }
 
 }
