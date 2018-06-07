@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, App, AlertController } from 'ionic-angular';
 import { Usuario } from '../../modelo/usuario';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
@@ -22,9 +22,9 @@ export class PerfilPage {
   public foto: any;
   public formData: FormData;
   public nombreImagen: string;
-  public url=CONSTANTS.url;
+  public url = CONSTANTS.url;
   constructor(public _usuarioService: UsuarioProvider, public toastCtrl: ToastController, public navCtrl: NavController, public navParams: NavParams,
-    private fb: FormBuilder, public app: App, private camera: Camera, private uploadService: UploadProvider, private file: File) {
+    private fb: FormBuilder, public app: App, public alertCtrl: AlertController, private camera: Camera, private uploadService: UploadProvider, private file: File) {
     this.usuarioForm = this.fb.group({
       dni: ['', Validators.required],
       nombre: ['', Validators.required],
@@ -105,6 +105,7 @@ export class PerfilPage {
     if (this.nombreImagen !== undefined) {
       this.usuario.imagen = this.nombreImagen;
     }
+    console.log(this.usuario.password);
     this._usuarioService.saveUsuario(this.usuario).subscribe(
       (response: any) => {
         console.log("RESPONSEEE" + JSON.stringify(response));
@@ -120,14 +121,11 @@ export class PerfilPage {
           this.app.getRootNav().setRoot(LoginPage);
         } else if (error.status === 409) {
           this.usuario.dni = JSON.parse(localStorage.getItem("usuario")).dni;
-          this.usuario.password = "";
           this.mostrarMensajeDuplicado("NIF");
         } else if (error.status === 406) {
           this.usuario.email = JSON.parse(localStorage.getItem("usuario")).email;
-          this.usuario.password = "";
           this.mostrarMensajeDuplicado("Email");
         } else {
-          this.usuario.password = "";
           this.mostrarMensajeIncorrecto();
         }
       }
@@ -140,6 +138,40 @@ export class PerfilPage {
       duration: 3000
     });
     toast.present();
+  }
+
+  cambiarPass() {
+    const prompt = this.alertCtrl.create({
+      title: 'Cambiar Contraseña',
+      message: "Para guardar contraseña pulse guardar en el formulario",
+      inputs: [
+        {
+          name: 'pass',
+          placeholder: 'Contraseña',
+          type: 'password'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: data => {
+            if (data.pass !== "") {
+              console.log(data.pass);
+              this.usuario.password = btoa(data.pass);
+              console.log(this.usuario.password);
+
+            }
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
 
   mostrarMensajeCorrecto() {
