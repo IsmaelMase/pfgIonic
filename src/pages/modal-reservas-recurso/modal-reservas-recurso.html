@@ -17,7 +17,7 @@
   </ion-toolbar>
   <ion-item>
     <ion-label>Buscar por fecha</ion-label>
-    <ion-datetime displayFormat="DD MMM YYYY" doneText="Elegir" cancelText="Cancelar" min="{{minDate}}" max={{maxDate}} pickerFormat="DD MMM YYYY"
+    <ion-datetime displayFormat="DDD, DD MMM YYYY" doneText="Elegir" cancelText="Cancelar" min="{{minDate}}" max={{maxDate}} pickerFormat="DD MMM YYYY"
       [(ngModel)]="buscador" (ngModelChange)="seleccionarFecha()"></ion-datetime>
   </ion-item>
 </ion-header>
@@ -40,7 +40,7 @@
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>
   </ion-list>-->
-  <ion-slides *ngIf="fechasArray.length>0" (ionSlideDidChange)="getFechaSlider()">
+  <ion-slides *ngIf="fechasArray.length>0" (ionSlideDidChange)="getFechaSlider()" [initialSlide]="slidePos">
     <ion-refresher (ionRefresh)="getReservas($event,null)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
@@ -65,7 +65,7 @@
               <ion-avatar item-start>
                 <img src="assets/imgs/calendario.png">
               </ion-avatar>
-              <h2 class="libre item">Reserva libre</h2>
+              <h2 class="libre item"><b>Reserva libre</b></h2>
               <h4>{{reserva.fechas_reservas[0]|date:'dd/MM/yyyy'}} {{reserva.intervalos_reservas[0]}}</h4>
             </ion-item>
           </div>

@@ -26,7 +26,7 @@ export class ReservasPage {
   @ViewChild(Slides) slides: Slides;
 
   public buscador: any = moment().format("YYYY-MM-DD");
-  public fechasBusqueda: string[];
+  public fechasBusqueda: string[] = [];
   public fechasArray: string[] = [];
   public recurso: Recurso;
   public usuario: Usuario;
@@ -51,7 +51,6 @@ export class ReservasPage {
 
   ionViewDidLoad() {
     this.getWeek();
-    this.getReservas(null, null);
   }
 
   eliminarReserva(id: string) {
@@ -236,20 +235,17 @@ export class ReservasPage {
 
   getWeek() {
     console.log(moment(this.buscador).day());
-    let diaSemana = (moment(this.buscador).day() - 1) * -1;
-    if (moment(this.buscador).day() !== 0 && moment(this.buscador).day() !== 6) {
-      this.fechasBusqueda = [];
-      // let numeroUltimoDia = 4 - (diaSemana * -1);
-      let primerDia = moment(this.buscador).add(diaSemana, "days").format("YYYY-MM-DD");
-      // let ultimoDia = moment(this.buscador).add(numeroUltimoDia, "days").format("YYYY-MM-DD");
-      this.getAllDayWeek(primerDia);
-      // this.fechasBusqueda.push(primerDia);
-      // this.fechasBusqueda.push(ultimoDia);
-      // this.getReservas(null, null);
+    let diaSemana;
+    if (moment(this.buscador).day() !== 0) {
+      diaSemana = (moment(this.buscador).day() - 1) * -1;
     } else {
-      this.reservasTotales = [];
-      this.reservas = [];
+      diaSemana = -6;
     }
+    console.log(diaSemana);
+    let primerDia;
+    this.fechasBusqueda = [];
+    primerDia = moment(this.buscador).add(diaSemana, "days").format("YYYY-MM-DD");
+    this.getAllDayWeek(primerDia);
   }
 
   getAllDayWeek(diaInicial) {
@@ -258,13 +254,24 @@ export class ReservasPage {
     for (let i = 1; i < 5; i++) {
       this.fechasArray.push(moment(diaInicial).add(i, "days").format("YYYY-MM-DD"))
     }
+    console.log(this.fechasArray)
 
     if (this.slides !== undefined) {
-      this.slides.slideTo(0);
-      this.fechaMostrar = moment(this.fechasArray[0]).format('dddd  DD MMMM YYYY ');
+      let pos = this.fechasArray.indexOf(moment(this.buscador).format("YYYY-MM-DD"))
+      if (pos === -1) {
+        this.slides.slideTo(4);
+      } else {
+        this.slides.slideTo(pos);
+      }
     } else {
-      this.fechaMostrar = moment(this.fechasArray[this.slidePos]).format('dddd  DD MMMM YYYY ');
+      let pos = this.fechasArray.indexOf(moment(this.buscador).format("YYYY-MM-DD"))
+      if (pos === -1) {
+        this.slidePos = 4;
+      } else {
+        this.slidePos = pos;
+      }
     }
+    this.fechaMostrar = moment(this.fechasArray[this.slidePos]).format('dddd  DD MMMM YYYY ');
     this.getReservas(null, null);
   }
 

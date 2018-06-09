@@ -35,7 +35,7 @@
     <ion-infinite-scroll (ionInfinite)="getReservas(null,$event)" *ngIf="continue">
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>-->
-  <ion-slides *ngIf="fechasArray.length>0" (ionSlideDidChange)="getFechaSlider()">
+  <ion-slides *ngIf="fechasArray.length>0" (ionSlideDidChange)="getFechaSlider()" [initialSlide]="slidePos">
     <ion-refresher (ionRefresh)="getReservas($event,null)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
