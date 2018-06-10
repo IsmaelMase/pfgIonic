@@ -12,10 +12,17 @@ import { CONSTANTS } from '../../global/constants';
 export class LoginProvider {
 
   public url: string;
+  /**
+   * Contructor parametrizado
+   * @param _http Http
+   */
   constructor(public http: HttpClient) {
     this.url = CONSTANTS.url;
   }
-
+  /**
+   * Metodo envia peticion de login
+   * @param usuarioLogin Datos de usuario
+   */
   login(usuarioLogin: any) {
     let json = JSON.stringify(usuarioLogin);
     console.log(json);
@@ -24,7 +31,10 @@ export class LoginProvider {
     return this.http.post(this.url + 'login', json, { headers: headers });
 
   }
-
+  /**
+   * Peticion cambio de contraseña
+   * @param changePassUser Datos usuario
+   */
   changePassword(changePassUser: any) {
     let json = JSON.stringify(changePassUser);
     console.log(json);

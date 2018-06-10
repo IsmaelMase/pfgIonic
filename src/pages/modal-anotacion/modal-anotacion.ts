@@ -20,33 +20,37 @@ export class ModalAnotacionPage {
 
   public reserva: Reserva;
   public horasDisponibles: string[];
-  public fecha:string;
+  public fecha: string;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public _reservaService: ReservaProvider,
     public toastCtrl: ToastController, public app: App
   ) {
-    
+
     this.reserva = this.navParams.get("reserva");
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ModalReservaPage');
   }
-
+  /**
+   * Cerrar ventana
+   */
   dismiss() {
     this.viewCtrl.dismiss();
   }
-
+  /**
+   * Guardar reserva
+   */
   realizarReserva() {
-   
+
     console.log(this.reserva);
     this._reservaService.addReserva(this.reserva).subscribe(
-      (response:any) => {
+      (response: any) => {
         console.log(response)
         this.mostrarMensajeCorrecto();
         this.dismiss();
       },
-      (error:any) => {
+      (error: any) => {
         if (error.status === 403) {
           localStorage.clear();
           this.app.getRootNav().setRoot(LoginPage);
@@ -56,7 +60,9 @@ export class ModalAnotacionPage {
       }
     );
   }
-
+  /**
+   * Mostrar mensaje error en la operacion
+   */
   mostrarMensajeIncorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Fallo al realizar la reserva',
@@ -64,6 +70,9 @@ export class ModalAnotacionPage {
     });
     toast.present();
   }
+  /**
+   * Mostrar mensaje operacion realizada
+   */
   mostrarMensajeCorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Anotación guardada',

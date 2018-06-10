@@ -26,6 +26,7 @@ export class LoginPage {
   public userChangePass: UserChangePass;
   constructor(public _loginService: LoginProvider, public toastCtrl: ToastController, public navCtrl: NavController, public navParams: NavParams,
     private alertCtrl: AlertController, private fb: FormBuilder) {
+    //validacion de formulario
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required]
@@ -36,13 +37,18 @@ export class LoginPage {
     this.userChangePass = new UserChangePass("", "", "");
     this.usuario = new Usuario("", "", "", "", "", "", "", [], "", "");
   }
-
+  /**
+   * Metodo cuando se incia la vista
+   */
   ionViewDidLoad() {
     if (localStorage.getItem("token")) {
       this.navCtrl.setRoot(TabsPage);
     }
     console.log('ionViewDidLoad LoginPage');
   }
+  /**
+   * Metodo para loguearse en la aplicacion
+   */
   conectar() {
     this.usuario.password = btoa(this.password);
     this._loginService.login(this.usuario).subscribe(
@@ -62,7 +68,9 @@ export class LoginPage {
       }
     );
   }
-
+  /**
+   * Metodo para generar nueva contraseña y envir peticion para cambiarla
+   */
   sendRequest() {
     let password = this.generatePass();
     this.userChangePass.passEncr = btoa(password);
@@ -82,7 +90,9 @@ export class LoginPage {
       }
     );
   }
-
+  /**
+   * Mostrar ventana emergente para introducir email
+   */
   showAlertFogetPass() {
     let alert = this.alertCtrl.create({
       title: 'Petición de nueva contraseña',
@@ -104,6 +114,7 @@ export class LoginPage {
         {
           text: 'Aceptar',
           handler: data => {
+            //se comprueba si el email es correcto
             if (data.email.includes("@") && data.email.includes(".")) {
               this.userChangePass.email = data.email;
               this.sendRequest();
@@ -116,7 +127,9 @@ export class LoginPage {
     });
     alert.present();
   }
-
+  /**
+   * Mostrar mensaje erro en la aplicacion
+   */
   mostrarMensajeIncorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Usuario o contraseña incorrectos',
@@ -124,7 +137,9 @@ export class LoginPage {
     });
     toast.present();
   }
-
+  /**
+   * Mostrar mensaje usuario no encontrado
+   */
   usuarioNotFound() {
     let toast = this.toastCtrl.create({
       message: 'El email introducido no esta regristrado',
@@ -132,6 +147,9 @@ export class LoginPage {
     });
     toast.present();
   }
+  /**
+   * Cambio de contraseña no se ha podido realizar
+   */
   operationNotDone() {
     let toast = this.toastCtrl.create({
       message: 'Error en la operación',
@@ -139,6 +157,9 @@ export class LoginPage {
     });
     toast.present();
   }
+  /**
+   * Cambio de contrañesa realizado
+   */
   operationDone() {
     let toast = this.toastCtrl.create({
       message: 'Contraseña modificada',
@@ -146,7 +167,9 @@ export class LoginPage {
     });
     toast.present();
   }
-
+  /**
+   * Email no valido
+   */
   emailNotValid() {
     let toast = this.toastCtrl.create({
       message: 'Email no valido',
@@ -154,7 +177,9 @@ export class LoginPage {
     });
     toast.present();
   }
-
+  /**
+   * Generar contraseña
+   */
   generatePass() {
     var chars = "ABCDEFGHIJKLMNOP1234567890";
     var pass = "";

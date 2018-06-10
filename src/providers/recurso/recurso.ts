@@ -16,19 +16,26 @@ export class RecursoProvider {
   constructor(public http: HttpClient) {
     this.url = CONSTANTS.url;
   }
-
+  /**
+   * Devuelve recursos
+   */
   getOtros() {
     let headers = new HttpHeaders({ 'Authorization': localStorage.getItem("token") });
 
     return this.http.get(this.url + 'recurso/otros', { headers: headers })
   }
-
+  /**
+   * Devuelve aulas
+   */
   getAulas() {
     let headers = new HttpHeaders({ 'Authorization': localStorage.getItem("token") });
 
     return this.http.get(this.url + 'recurso/aulas', { headers: headers })
   }
-
+  /**
+   * Guardar recurso
+   * @param recurso Recurso
+   */
   addRecurso(recurso: Recurso) {
     let json = JSON.stringify(recurso);
     let head = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") });

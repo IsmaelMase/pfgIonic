@@ -9,7 +9,10 @@ export class UsuarioProvider {
   constructor(public http: HttpClient) {
     this.url = CONSTANTS.url;
   }
-
+  /**
+   * Guardar usuario
+   * @param usuario Usuario
+   */
   saveUsuario(usuario) {
     let json = JSON.stringify(usuario);
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });

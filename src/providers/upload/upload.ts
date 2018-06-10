@@ -15,7 +15,10 @@ export class UploadProvider {
   constructor(public http: Http) {
     this.url = CONSTANTS.url;
   }
-
+  /**
+   * Guardar imagen
+   * @param formdata Imagen
+   */
   saveImage(formdata: FormData) {
     return this.http.post(this.url + 'upload/saveFile', formdata)
   }

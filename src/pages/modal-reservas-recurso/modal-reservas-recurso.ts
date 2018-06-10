@@ -29,7 +29,6 @@ export class ModalReservasRecursoPage {
   public recurso: Recurso
   public reservas: Reserva[] = [];
   public reservasTotales: Reserva[] = [];
-  public skip: number = -1;
   public continue: boolean = true;
   public minDate = moment().format("YYYY-MM-DD");
   public maxDate = moment().add(2, 'years').format("YYYY-MM-DD");
@@ -53,13 +52,11 @@ export class ModalReservasRecursoPage {
   }
 
   getReservas(refresher, infiniteScroll) {
-    this.skip = this.skip + 1;
     this.reservas = [];
     this.reservasTotales = [];
     if (refresher != null) {
       this.reservas = [];
       this.reservasTotales = [];
-      this.skip = 0;
     }
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
@@ -68,7 +65,7 @@ export class ModalReservasRecursoPage {
 
     loading.present();
 
-    this._reservaService.getReservasByRecurso(this.recurso.id, this.skip, this.fechasArray[this.slidePos]).subscribe(
+    this._reservaService.getReservasByRecurso(this.recurso.id, this.fechasArray[this.slidePos]).subscribe(
       (response: any) => {
         console.log(response);
         if (response.length >= 60) {
@@ -137,14 +134,12 @@ export class ModalReservasRecursoPage {
   // }
 
   limpiar() {
-    this.skip = -1;
     console.log(this.buscador);
     this.reservas = [];
     this.reservasTotales = [];
     this.getReservas(null, null);
   }
   seleccionarFecha() {
-    this.skip = -1;
     console.log(this.buscador);
     this.reservas = [];
     this.reservasTotales = [];
@@ -215,7 +210,6 @@ export class ModalReservasRecursoPage {
   getFechaSlider() {
     this.slidePos = this.slides.getActiveIndex()
     if (this.slidePos !== 5) {
-      this.skip = -1;
       this.reservas = [];
       this.reservasTotales = [];
       console.log(this.slidePos);

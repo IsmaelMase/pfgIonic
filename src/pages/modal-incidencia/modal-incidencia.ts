@@ -27,11 +27,15 @@ export class ModalIncidenciaPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ModalReservaPage');
   }
-
+  /**
+   * Cerrar ventana
+   */
   dismiss() {
     this.viewCtrl.dismiss();
   }
-
+  /**
+   * Guardar incidencia
+   */
   guardarIncidencia() {
     this._recursoService.addRecurso(this.recurso).subscribe(
       (response: any) => {
@@ -50,7 +54,9 @@ export class ModalIncidenciaPage {
       }
     );
   }
-
+  /**
+   * Mostrar mensaje error en la operacion
+   */
   mostrarMensajeIncorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Fallo al comunicar la incidencia',
@@ -58,6 +64,9 @@ export class ModalIncidenciaPage {
     });
     toast.present();
   }
+  /**
+   * Mostrar mensaje operacion realizada
+   */
   mostrarMensajeCorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Incidencia comunicada',
