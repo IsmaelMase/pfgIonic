@@ -46,11 +46,17 @@ export class ModalReservasRecursoPage {
   ionViewDidLoad() {
     this.getWeek();
   }
-
+  /**
+   * Cerrar ventana
+   */
   dismiss() {
     this.viewCtrl.dismiss();
   }
-
+  /**
+   * Obtener reservas por fecha y recurso
+   * @param refresher Refresh elemento para cuando se realiza el refresco de listado
+   * @param infiniteScroll InfiniteScroll elemento para cuando se llega al final de la lista
+   */
   getReservas(refresher, infiniteScroll) {
     this.reservas = [];
     this.reservasTotales = [];
@@ -113,6 +119,9 @@ export class ModalReservasRecursoPage {
       }
     );
   }
+  /**
+   * Mostrar mensaje error en la operacion
+   */
   mostrarMensajeIncorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Fallo al obtener reservas',
@@ -120,25 +129,18 @@ export class ModalReservasRecursoPage {
     });
     toast.present();
   }
-
-  // getItems() {
-  //   let fechaSeleccionada;
-  //   if (this.buscador !== "") {
-  //     let fecha = this.buscador.split("-");
-  //     fechaSeleccionada = fecha[2] + "/" + fecha[1] + "/" + fecha[0];
-  //     this.reservas = this.reservasTotales.filter((reserva: Reserva) => reserva.fechas_reservas[0] === fechaSeleccionada);
-  //   } else {
-  //     this.reservas=[...this.reservasTotales];
-  //   }
-
-  // }
-
+  /**
+   * Inicializar variables
+   */
   limpiar() {
     console.log(this.buscador);
     this.reservas = [];
     this.reservasTotales = [];
     this.getReservas(null, null);
   }
+  /**
+   * Metodo para inicializar variables cunado se selecciona una fecha
+   */
   seleccionarFecha() {
     console.log(this.buscador);
     this.reservas = [];
@@ -146,7 +148,10 @@ export class ModalReservasRecursoPage {
     this.fechasArray = [];
     this.getWeek();
   }
-
+  /**
+   * Mostrar anotacion de reserva
+   * @param reserva Reserva
+   */
   mostrarAnotacionReserva(reserva: Reserva) {
     const alert = this.alertCtrl.create({
       title: 'Anotación',
@@ -156,7 +161,10 @@ export class ModalReservasRecursoPage {
     alert.present();
 
   }
-
+  /**
+   * Abrir ventana para la realizacion de una reserva
+   * @param reserva Reserva
+   */
   abrirVentanaReserva(reserva) {
     let modal = this.modalCtrl.create(ModalReservaVaciaPage, { 'reserva': reserva });
     modal.onDidDismiss(data => {
@@ -164,7 +172,9 @@ export class ModalReservasRecursoPage {
     });
     modal.present();
   }
-
+  /**
+   * Obtener dias de una semana donde se encuentre la fecha indicada
+   */
   getWeek() {
     console.log(moment(this.buscador).day());
     let diaSemana;
@@ -179,7 +189,10 @@ export class ModalReservasRecursoPage {
     primerDia = moment(this.buscador).add(diaSemana, "days").format("YYYY-MM-DD");
     this.getAllDayWeek(primerDia);
   }
-
+  /**
+   * Obtener dias de las semana segun la fecha y guardar en array y controlar posicion del slider
+   * @param diaInicial String primer dia de la semana
+   */
   getAllDayWeek(diaInicial) {
     this.fechasArray = [];
     this.fechasArray.push(diaInicial);
@@ -206,7 +219,9 @@ export class ModalReservasRecursoPage {
     this.fechaMostrar = moment(this.fechasArray[this.slidePos]).format('dddd  DD MMMM YYYY ');
     this.getReservas(null, null);
   }
-
+  /**
+   * Metodo para refresca las variables cuando se cambia de fecha en el slider
+   */
   getFechaSlider() {
     this.slidePos = this.slides.getActiveIndex()
     if (this.slidePos !== 5) {

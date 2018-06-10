@@ -20,7 +20,7 @@ export class RecursosPage {
   public recursos: Recurso[];
   public recursosTotales: Recurso[];
   public buscador: string = "";
-  public url=CONSTANTS.url;
+  public url = CONSTANTS.url;
   constructor(public _recursoService: RecursoProvider, public navCtrl: NavController, public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController, public platform: Platform,
     public modalCtrl: ModalController, public loadingCtrl: LoadingController, public app: App,
@@ -31,9 +31,10 @@ export class RecursosPage {
     this.opciones = "aulas";
     this.cambiarRecursos(null);
   }
-
-
-
+  /**
+   * Cambiar obtener recursos o aulas
+   * @param refresher Refresh elemento para refrescar lista
+   */
   cambiarRecursos(refresher) {
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
@@ -93,7 +94,10 @@ export class RecursosPage {
       );
     }
   }
-
+  /**
+   * Abrir menu de opciones para los recursos
+   * @param recurso Recurso
+   */
   abrirMenuOpciones(recurso) {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Opciones',
@@ -131,12 +135,16 @@ export class RecursosPage {
     });
     actionSheet.present();
   }
-
+  /**
+   * Filtrar recursos
+   */
   getItems() {
     this.recursos = this.recursosTotales.filter((recurso: Recurso) => recurso.nombre.toUpperCase().includes(this.buscador.toUpperCase()));
     this.recursos.sort(this.ordenarAZ);
   }
-
+  /**
+   * Mostrar mensaje error en la operacion
+   */
   mostrarMensajeIncorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Fallo al obtener recursos',
@@ -144,7 +152,11 @@ export class RecursosPage {
     });
     toast.present();
   }
-
+  /**
+   * Ordenar recursos alfabeticamente
+   * @param a Recurso a
+   * @param b Recurso b
+   */
   ordenarAZ(a, b) {
     if (a.nombre.toLowerCase() < b.nombre.toLowerCase())
       return -1;

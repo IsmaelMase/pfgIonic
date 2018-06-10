@@ -52,7 +52,10 @@ export class ReservasPage {
   ionViewDidLoad() {
     this.getWeek();
   }
-
+  /**
+   * Eliminar reserva
+   * @param id String id reserva
+   */
   eliminarReserva(id: string) {
     this._reservaService.removeReserva(id).subscribe(
       (response: any) => {
@@ -69,7 +72,11 @@ export class ReservasPage {
       }
     );
   }
-
+  /**
+   * Obtener reservas por fecha y usuario
+   * @param refresher Refresh 
+   * @param infiniteScroll InfiniteScroll
+   */
   getReservas(refresher, infiniteScroll) {
     this.skip = this.skip + 1;
     if (refresher != null) {
@@ -132,7 +139,9 @@ export class ReservasPage {
       }
     );
   }
-
+  /**
+   * Mostrar mensaje eliminacion realziada
+   */
   mostrarMensajeCorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Reserva Anulada',
@@ -140,7 +149,9 @@ export class ReservasPage {
     });
     toast.present();
   }
-
+  /**
+   * Mostrar mensaje error en la eliminacion
+   */
   mostrarMensajeIncorrectoEliminar() {
     let toast = this.toastCtrl.create({
       message: 'Error al anular la reserva',
@@ -148,7 +159,9 @@ export class ReservasPage {
     });
     toast.present();
   }
-
+  /**
+   * Mostrar mensaje error al recuperar las reservas
+   */
   mostrarMensajeIncorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Fallo al obtener reservas',
@@ -156,17 +169,10 @@ export class ReservasPage {
     });
     toast.present();
   }
-
-  // getItems() {
-  //   let fechaSeleccionada;
-  //   if (this.buscador !== "") {
-  //     let fecha = this.buscador.split("-");
-  //     this.reservas = this.reservasTotales.filter((reserva: Reserva) => reserva.fechas_reservas[0] === fechaSeleccionada);
-  //   } else {
-  //     this.reservas = [...this.reservasTotales];
-  //   }
-  // }
-
+  /**
+   * Mostrar menu operaciones reserva
+   * @param reserva Reserva
+   */
   abrirMenuOpciones(reserva) {
     let actionSheet = this.actionSheetCtrl.create({
       title: 'Opciones',
@@ -195,7 +201,10 @@ export class ReservasPage {
     });
     actionSheet.present();
   }
-
+  /**
+   * Mensaje confirmacion borrado reserva
+   * @param id String id reserva
+   */
   mostrarConfirmacion(id) {
     let confirm = this.alertCtrl.create({
       title: 'Anular',
@@ -216,7 +225,9 @@ export class ReservasPage {
     });
     confirm.present();
   }
-
+  /**
+   * Inicializar varibales
+   */
   limpiar() {
     this.skip = -1;
     console.log(this.buscador);
@@ -224,6 +235,9 @@ export class ReservasPage {
     this.reservasTotales = [];
     this.getReservas(null, null);
   }
+  /**
+   * Metodo para inicializar variables cuando se cambia la fecha
+   */
   seleccionarFecha() {
     this.skip = -1;
     console.log(this.buscador);
@@ -232,7 +246,9 @@ export class ReservasPage {
     this.fechasArray = [];
     this.getWeek();
   }
-
+  /**
+   * Obtener primer dia de la semana segun la fecha seleccionada
+   */
   getWeek() {
     console.log(moment(this.buscador).day());
     let diaSemana;
@@ -247,7 +263,10 @@ export class ReservasPage {
     primerDia = moment(this.buscador).add(diaSemana, "days").format("YYYY-MM-DD");
     this.getAllDayWeek(primerDia);
   }
-
+  /**
+   * Obtener dias de la semana segun una fecha
+   * @param diaInicial Stirng primer dia de la semana
+   */
   getAllDayWeek(diaInicial) {
     this.fechasArray = [];
     this.fechasArray.push(diaInicial);
@@ -274,7 +293,9 @@ export class ReservasPage {
     this.fechaMostrar = moment(this.fechasArray[this.slidePos]).format('dddd  DD MMMM YYYY ');
     this.getReservas(null, null);
   }
-
+  /**
+   * Obtener fecha cuando se cambia posicion del slider
+   */
   getFechaSlider() {
     this.slidePos = this.slides.getActiveIndex()
     if (this.slidePos !== 5) {

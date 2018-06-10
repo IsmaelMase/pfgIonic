@@ -43,11 +43,15 @@ export class ModalReservaPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ModalReservaPage');
   }
-
+  /**
+   * Cerrar ventana
+   */
   dismiss() {
     this.viewCtrl.dismiss();
   }
-
+  /**
+   * Realizar reserva
+   */
   realizarReserva() {
     this.doingReserva = true;
     this.selectCurso(this.reserva.curso);
@@ -73,13 +77,18 @@ export class ModalReservaPage {
       }
     );
   }
-
+  /**
+   * Seleccionar curso
+   * @param idCurso String idCurso
+   */
   selectCurso(idCurso) {
     console.log(event);
     let curso = this.usuario.cursos.filter((curso: Curso) => curso.id === idCurso);
     this.reserva.curso = curso[0];
   }
-
+  /**
+   * Obtener horas diponibles
+   */
   getHorasDisponibles() {
     let fecha = this.reserva.fechas_reservas[0].split("-");
     this.reserva.fechas_reservas[0] = fecha[0] + "/" + fecha[1] + "/" + fecha[2];
@@ -101,7 +110,9 @@ export class ModalReservaPage {
       }
     );
   }
-
+  /**
+   * Mostrar mensaje error en la operacion
+   */
   mostrarMensajeIncorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Fallo al realizar la reserva',
@@ -109,6 +120,9 @@ export class ModalReservaPage {
     });
     toast.present();
   }
+  /**
+   * Mostrar mensaje operacion realizada
+   */
   mostrarMensajeCorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Reserva realizada correctamente',
@@ -116,7 +130,9 @@ export class ModalReservaPage {
     });
     toast.present();
   }
-
+  /**
+   * Mostrar mensaje conflicto reserva ya realizada
+   */
   mostrarMensajeConflicto() {
     let toast = this.toastCtrl.create({
       message: 'Reserva ocupada por otro usuario',

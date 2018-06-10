@@ -38,7 +38,9 @@ export class PerfilPage {
   ionViewDidLoad() {
     this.usuario = JSON.parse(localStorage.getItem("usuario"));
   }
-
+  /**
+   * Seleccionar imagen
+   */
   selectPhoto(): void {
     this.camera.getPicture({
       sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
@@ -52,25 +54,32 @@ export class PerfilPage {
       console.log(error);
     });
   }
-
-  private uploadPhoto(imageFileUri: any): void {
+  /**
+   * Resolver ruta de la imagen para obtenerla
+   * @param imageFileUri  String ruta imagen
+   */
+  uploadPhoto(imageFileUri: any): void {
     this.file.resolveLocalFilesystemUrl(imageFileUri)
       .then(entry => (<FileEntry>entry).file(file => this.readFile(file)))
       .catch(err => console.log(err));
   }
-
-  private readFile(file: any) {
+  /**
+   * Leer la imagen
+   * @param file Imagen
+   */
+  readFile(file: any) {
     let reader = new FileReader();
     reader.onloadend = () => {
       this.formData = new FormData();
       let imgBlob = new Blob([reader.result], { type: file.type });
       this.formData.append('file', imgBlob, file.name);
       this.nombreImagen = file.name;
-      console.log("IMAGGEEEEN" + this.formData)
     };
     reader.readAsArrayBuffer(file);
   }
-
+  /**
+   * Subir imagen a la api
+   */
   upload() {
     if (this.formData !== undefined) {
       this.uploadService.saveImage(this.formData).subscribe(
@@ -95,12 +104,16 @@ export class PerfilPage {
       this.saveUsuario();
     }
   }
-
+  /**
+   * Cerrar sesion
+   */
   logout() {
     localStorage.clear();
     this.app.getRootNav().setRoot(LoginPage);
   }
-
+  /**
+   * Guardar datos usuario
+   */
   saveUsuario() {
     if (this.nombreImagen !== undefined) {
       this.usuario.imagen = this.nombreImagen;
@@ -131,7 +144,9 @@ export class PerfilPage {
       }
     );
   }
-
+  /**
+   * Mostrar mensaje error en al operacion
+   */
   mostrarMensajeIncorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Datos no guardados',
@@ -139,7 +154,9 @@ export class PerfilPage {
     });
     toast.present();
   }
-
+  /**
+   * Metodo para mostrar la ventana para el cambio de contraseña
+   */
   cambiarPass() {
     const prompt = this.alertCtrl.create({
       title: 'Cambiar Contraseña',
@@ -161,6 +178,7 @@ export class PerfilPage {
         {
           text: 'Aceptar',
           handler: data => {
+            //se comprueba que la contraseña sea correcta
             if (data.pass !== "") {
               console.log(data.pass);
               this.usuario.password = btoa(data.pass);
@@ -173,7 +191,9 @@ export class PerfilPage {
     });
     prompt.present();
   }
-
+  /**
+   * Mostrar mensaje operacion realizada
+   */
   mostrarMensajeCorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Datos guardados',
@@ -181,7 +201,9 @@ export class PerfilPage {
     });
     toast.present();
   }
-
+  /**
+   * Mostrar mensaje error en la subida de la imagen
+   */
   mostrarMensajeIncorrectoImagen() {
     let toast = this.toastCtrl.create({
       message: 'Error al guardar la imagen',
@@ -189,7 +211,10 @@ export class PerfilPage {
     });
     toast.present();
   }
-
+  /**
+   * Mostrar error campo duplicado
+   * @param campo String campo
+   */
   mostrarMensajeDuplicado(campo: string) {
     let toast = this.toastCtrl.create({
       message: 'El campo ' + campo + ' ya esta registrado',
