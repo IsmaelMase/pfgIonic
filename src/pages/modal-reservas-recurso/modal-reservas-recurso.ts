@@ -40,6 +40,8 @@ export class ModalReservasRecursoPage {
     public actionSheetCtrl: ActionSheetController, public alertCtrl: AlertController, public modalCtrl: ModalController
   ) {
     this.recurso = navParams.get('recurso');
+    this.maxDate = moment(this.recurso.intervalo.fecha_max).format("YYYY-MM-DD");
+    this.minDate = moment().format("YYYY-MM-DD");
     moment.locale('es');
   }
 
@@ -155,7 +157,7 @@ export class ModalReservasRecursoPage {
   mostrarAnotacionReserva(reserva: Reserva) {
     const alert = this.alertCtrl.create({
       title: 'Anotación',
-      subTitle: reserva.anotacion,
+      message: reserva.anotacion,
       buttons: ['Cerrar']
     });
     alert.present();

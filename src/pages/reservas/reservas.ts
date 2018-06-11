@@ -191,7 +191,7 @@ export class ReservasPage {
             this.mostrarConfirmacion(reserva.id);
           }
         }, {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           icon: !this.platform.is('ios') ? 'md-close' : null,
           handler: () => {

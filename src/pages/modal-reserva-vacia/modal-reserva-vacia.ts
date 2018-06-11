@@ -5,7 +5,6 @@ import { Usuario } from '../../modelo/usuario';
 import { Curso } from '../../modelo/curso';
 import { ReservaProvider } from '../../providers/reserva/reserva';
 import { LoginPage } from '../login/login';
-import * as moment from 'moment';
 
 /**
  * Generated class for the ModalReservaVaciaPage page.

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams, ActionSheetController, Platform, LoadingController, App, ToastController } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams, ActionSheetController, Platform, LoadingController, App, ToastController, AlertController } from 'ionic-angular';
 import { ModalReservaPage } from '../modal-reserva/modal-reserva';
 import { RecursoProvider } from '../../providers/recurso/recurso';
 import { Recurso } from '../../modelo/recurso';
@@ -24,7 +24,7 @@ export class RecursosPage {
   constructor(public _recursoService: RecursoProvider, public navCtrl: NavController, public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController, public platform: Platform,
     public modalCtrl: ModalController, public loadingCtrl: LoadingController, public app: App,
-    public toastCtrl: ToastController) {
+    public toastCtrl: ToastController, public alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -124,11 +124,22 @@ export class RecursosPage {
             modal.present();
           }
         }, {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           icon: !this.platform.is('ios') ? 'md-close' : null,
           handler: () => {
             console.log('Reserva clicked');
+          }
+        }, {
+          text: 'Ver datos e incidencias',
+          icon: !this.platform.is('ios') ? 'md-information-circle' : null,
+          handler: () => {
+            const alert = this.alertCtrl.create({
+              title: 'Datos e incidencias',
+              message: 'Datos: '+recurso.datos+'<br><br>Incidencias: '+recurso.incidencia,
+              buttons: ['Cerrar']
+            });
+            alert.present();
           }
         }
       ]

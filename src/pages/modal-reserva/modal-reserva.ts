@@ -90,25 +90,27 @@ export class ModalReservaPage {
    * Obtener horas diponibles
    */
   getHorasDisponibles() {
-    let fecha = this.reserva.fechas_reservas[0].split("-");
-    this.reserva.fechas_reservas[0] = fecha[0] + "/" + fecha[1] + "/" + fecha[2];
-    let fechaSeleccionada = fecha[0] + "/" + fecha[1] + "/" + fecha[2];
-    this._reservaService.getHorasDisponibles(fechaSeleccionada, this.recurso.id).subscribe(
-      (response: any) => {
+    if (moment(this.reserva.fechas_reservas[0]).day() === 0 || moment(this.reserva.fechas_reservas[0]).day() === 6) {
+      this.mostrarMensajeIncorrectoFecha();
+    } else {
+      this.reserva.fechas_reservas[0] = moment(this.reserva.fechas_reservas[0]).format("YYYY/MM/DD")
+      this._reservaService.getHorasDisponibles(this.reserva.fechas_reservas[0], this.recurso.id).subscribe(
+        (response: any) => {
 
-        this.horasDisponibles = response;
-        console.log(this.horasDisponibles);
-      },
-      (error: any) => {
-        if (error.status == 403) {
-          localStorage.clear();
-          this.app.getRootNav().setRoot(LoginPage);
-        } else {
-          this.mostrarMensajeIncorrecto();
+          this.horasDisponibles = response;
+          console.log(this.horasDisponibles);
+        },
+        (error: any) => {
+          if (error.status == 403) {
+            localStorage.clear();
+            this.app.getRootNav().setRoot(LoginPage);
+          } else {
+            this.mostrarMensajeIncorrecto();
+          }
+          console.log(error);
         }
-        console.log(error);
-      }
-    );
+      );
+    }
   }
   /**
    * Mostrar mensaje error en la operacion
@@ -116,6 +118,16 @@ export class ModalReservaPage {
   mostrarMensajeIncorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Fallo al realizar la reserva',
+      duration: 3000
+    });
+    toast.present();
+  }
+  /**
+   * Mostrar mensaje error en la fecha
+   */
+  mostrarMensajeIncorrectoFecha() {
+    let toast = this.toastCtrl.create({
+      message: 'Por favor seleccione un dia entre Lunes y Viernes',
       duration: 3000
     });
     toast.present();

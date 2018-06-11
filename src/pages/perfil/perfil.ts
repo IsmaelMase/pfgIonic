@@ -4,7 +4,7 @@ import { Usuario } from '../../modelo/usuario';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
 import { LoginPage } from '../login/login';
-import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Camera } from '@ionic-native/camera';
 import { UploadProvider } from '../../providers/upload/upload';
 import { File, FileEntry } from '@ionic-native/file';
 import { CONSTANTS } from '../../global/constants';
