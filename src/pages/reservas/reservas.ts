@@ -79,9 +79,9 @@ export class ReservasPage {
    */
   getReservas(refresher, infiniteScroll) {
     this.skip = this.skip + 1;
+    this.reservas = [];
+    this.reservasTotales = [];
     if (refresher != null) {
-      this.reservas = [];
-      this.reservasTotales = [];
       this.skip = 0;
     }
     let loading = this.loadingCtrl.create({
@@ -241,8 +241,6 @@ export class ReservasPage {
   seleccionarFecha() {
     this.skip = -1;
     console.log(this.buscador);
-    this.reservas = [];
-    this.reservasTotales = [];
     this.fechasArray = [];
     this.getWeek();
   }
@@ -252,10 +250,14 @@ export class ReservasPage {
   getWeek() {
     console.log(moment(this.buscador).day());
     let diaSemana;
-    if (moment(this.buscador).day() !== 0) {
+    if (moment(this.buscador).day() !== 0 && moment(this.buscador).day() !== 6) {
       diaSemana = (moment(this.buscador).day() - 1) * -1;
     } else {
-      diaSemana = -6;
+      if(moment(this.buscador).day() === 0){
+        diaSemana = -6;
+      }else{
+        diaSemana = -5;
+      }
     }
     console.log(diaSemana);
     let primerDia;
@@ -271,33 +273,40 @@ export class ReservasPage {
     this.fechasArray = [];
     this.fechasArray.push(diaInicial);
     for (let i = 1; i < 5; i++) {
-      this.fechasArray.push(moment(diaInicial).add(i, "days").format("YYYY-MM-DD"))
+      this.fechasArray.push(moment(diaInicial).add(i, "days").format("YYYY-MM-DD"));
     }
     console.log(this.fechasArray)
 
     if (this.slides !== undefined) {
-      let pos = this.fechasArray.indexOf(moment(this.buscador).format("YYYY-MM-DD"))
+      let pos = this.fechasArray.indexOf(moment(this.buscador).format("YYYY-MM-DD"));
+      console.log(pos);
       if (pos === -1) {
         this.slides.slideTo(4);
       } else {
         this.slides.slideTo(pos);
       }
     } else {
-      let pos = this.fechasArray.indexOf(moment(this.buscador).format("YYYY-MM-DD"))
+      let pos = this.fechasArray.indexOf(moment(this.buscador).format("YYYY-MM-DD"));
+      console.log(pos);
       if (pos === -1) {
         this.slidePos = 4;
       } else {
         this.slidePos = pos;
       }
     }
+    console.log(this.slidePos);
+    if(this.slidePos===0){
+      this.getReservas(null,null);
+    }
     this.fechaMostrar = moment(this.fechasArray[this.slidePos]).format('dddd  DD MMMM YYYY ');
-    this.getReservas(null, null);
+    console.log(this.fechaMostrar);
   }
   /**
    * Obtener fecha cuando se cambia posicion del slider
    */
   getFechaSlider() {
-    this.slidePos = this.slides.getActiveIndex()
+    this.slidePos = this.slides.getActiveIndex();
+    console.log("POSICIN"+this.slidePos);
     if (this.slidePos !== 5) {
       this.skip = -1;
       this.reservas = [];

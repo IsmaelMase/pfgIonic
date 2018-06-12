@@ -23,7 +23,7 @@ import { ModalReservaVaciaPage } from '../modal-reserva-vacia/modal-reserva-vaci
 export class ModalReservasRecursoPage {
   @ViewChild(Slides) slides: Slides;
 
-  public buscador: any = moment().format("YYYY-MM-DD");
+  public buscador: any = moment().add(4, 'days').format("YYYY-MM-DD");
   public fechasBusqueda: string[];
   public fechasArray: string[] = [];
   public recurso: Recurso
@@ -62,10 +62,6 @@ export class ModalReservasRecursoPage {
   getReservas(refresher, infiniteScroll) {
     this.reservas = [];
     this.reservasTotales = [];
-    if (refresher != null) {
-      this.reservas = [];
-      this.reservasTotales = [];
-    }
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
       content: 'Cargando. Espere por favor'
@@ -145,8 +141,6 @@ export class ModalReservasRecursoPage {
    */
   seleccionarFecha() {
     console.log(this.buscador);
-    this.reservas = [];
-    this.reservasTotales = [];
     this.fechasArray = [];
     this.getWeek();
   }
@@ -180,10 +174,14 @@ export class ModalReservasRecursoPage {
   getWeek() {
     console.log(moment(this.buscador).day());
     let diaSemana;
-    if (moment(this.buscador).day() !== 0) {
+    if (moment(this.buscador).day() !== 0 && moment(this.buscador).day() !== 6) {
       diaSemana = (moment(this.buscador).day() - 1) * -1;
     } else {
-      diaSemana = -6;
+      if (moment(this.buscador).day() === 0) {
+        diaSemana = -6;
+      } else {
+        diaSemana = -5;
+      }
     }
     console.log(diaSemana);
     let primerDia;
@@ -218,8 +216,10 @@ export class ModalReservasRecursoPage {
         this.slidePos = pos;
       }
     }
+    if(this.slidePos===0){
+      this.getReservas(null,null);
+    }
     this.fechaMostrar = moment(this.fechasArray[this.slidePos]).format('dddd  DD MMMM YYYY ');
-    this.getReservas(null, null);
   }
   /**
    * Metodo para refresca las variables cuando se cambia de fecha en el slider

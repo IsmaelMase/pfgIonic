@@ -127,7 +127,7 @@ export class ModalReservaPage {
    */
   mostrarMensajeIncorrectoFecha() {
     let toast = this.toastCtrl.create({
-      message: 'Por favor seleccione un dia entre Lunes y Viernes',
+      message: 'Por favor seleccione un día entre Lunes y Viernes',
       duration: 3000
     });
     toast.present();

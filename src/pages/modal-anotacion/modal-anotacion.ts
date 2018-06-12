@@ -65,7 +65,7 @@ export class ModalAnotacionPage {
    */
   mostrarMensajeIncorrecto() {
     let toast = this.toastCtrl.create({
-      message: 'Fallo al realizar la reserva',
+      message: 'Fallo al guardar anotación',
       duration: 3000
     });
     toast.present();
