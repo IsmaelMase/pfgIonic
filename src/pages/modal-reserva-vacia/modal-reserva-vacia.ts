@@ -62,6 +62,9 @@ export class ModalReservaVaciaPage {
         } else if (error.status === 409) {
           this.mostrarMensajeConflicto()
           this.doingReserva = false;
+        }else if (error.status === 302) {
+          this.mostrarMensajeUsuarioOcupado()
+          this.doingReserva = false;
         } else {
           this.mostrarMensajeIncorrecto();
         }
@@ -104,6 +107,16 @@ export class ModalReservaVaciaPage {
   mostrarMensajeConflicto() {
     let toast = this.toastCtrl.create({
       message: 'Reserva ocupada por otro usuario',
+      duration: 3000
+    });
+    toast.present();
+  }
+  /**
+   * Mostrar mensaje de error al realziar la reserva porque ya existe para otro aula
+   */
+  mostrarMensajeUsuarioOcupado() {
+    let toast = this.toastCtrl.create({
+      message: 'Fecha y hora ya reservadas para otro aula',
       duration: 3000
     });
     toast.present();

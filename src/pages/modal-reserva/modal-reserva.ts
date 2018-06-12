@@ -70,6 +70,9 @@ export class ModalReservaPage {
         } else if (error.status === 409) {
           this.mostrarMensajeConflicto()
           this.doingReserva = false;
+        } else if (error.status === 302) {
+          this.mostrarMensajeUsuarioOcupado()
+          this.doingReserva = false;
         } else {
           this.mostrarMensajeIncorrecto();
         }
@@ -118,6 +121,16 @@ export class ModalReservaPage {
   mostrarMensajeIncorrecto() {
     let toast = this.toastCtrl.create({
       message: 'Fallo al realizar la reserva',
+      duration: 3000
+    });
+    toast.present();
+  }
+  /**
+   * Mostrar mensaje de error al realziar la reserva porque ya existe para otro aula
+   */
+  mostrarMensajeUsuarioOcupado() {
+    let toast = this.toastCtrl.create({
+      message: 'Fecha y hora ya reservadas para otro aula',
       duration: 3000
     });
     toast.present();

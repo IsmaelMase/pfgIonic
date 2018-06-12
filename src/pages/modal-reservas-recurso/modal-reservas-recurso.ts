@@ -23,7 +23,7 @@ import { ModalReservaVaciaPage } from '../modal-reserva-vacia/modal-reserva-vaci
 export class ModalReservasRecursoPage {
   @ViewChild(Slides) slides: Slides;
 
-  public buscador: any = moment().add(4, 'days').format("YYYY-MM-DD");
+  public buscador: any = moment().format("YYYY-MM-DD");
   public fechasBusqueda: string[];
   public fechasArray: string[] = [];
   public recurso: Recurso
