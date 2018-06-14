@@ -25,7 +25,6 @@ export class ModalIncidenciaPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ModalReservaPage');
   }
   /**
    * Cerrar ventana
@@ -39,12 +38,10 @@ export class ModalIncidenciaPage {
   guardarIncidencia() {
     this._recursoService.addRecurso(this.recurso).subscribe(
       (response: any) => {
-        console.log(response)
         this.mostrarMensajeCorrecto();
         this.dismiss();
       },
       (error: any) => {
-        console.log(error.status)
         if (error.status === 403) {
           localStorage.clear();
           this.app.getRootNav().setRoot(LoginPage);

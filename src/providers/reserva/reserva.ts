@@ -38,7 +38,6 @@ export class ReservaProvider {
    */
   getHorasDisponibles(fecha: string, id: string) {
     let json = JSON.stringify(fecha);
-    console.log(json);
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem("token") });
 

@@ -33,7 +33,7 @@
         <ion-avatar item-start>
           <img *ngIf="!recurso.imagen && opciones==='aulas'" src="assets/imgs/aula.png">
           <img *ngIf="!recurso.imagen && opciones==='recursos'" src="assets/imgs/recurso.png">
-          <img *ngIf="recurso.imagen" src="{{url}}upload/files/{{recurso.imagen}}">
+          <img *ngIf="recurso.imagen" src="{{recurso.imagen}}">
         </ion-avatar>
         <h2>{{recurso.nombre}}</h2>
         <div *ngIf="recurso.capacidad">

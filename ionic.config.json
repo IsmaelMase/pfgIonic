@@ -1,6 +1,6 @@
 {
-  "name": "TASApp",
-  "app_id": "TASApp",
+  "name": "SalesRev",
+  "app_id": "SalesRev",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}

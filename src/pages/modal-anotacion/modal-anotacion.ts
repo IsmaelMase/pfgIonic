@@ -30,7 +30,6 @@ export class ModalAnotacionPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ModalReservaPage');
   }
   /**
    * Cerrar ventana
@@ -42,11 +41,8 @@ export class ModalAnotacionPage {
    * Guardar reserva
    */
   realizarReserva() {
-
-    console.log(this.reserva);
     this._reservaService.addReserva(this.reserva).subscribe(
       (response: any) => {
-        console.log(response)
         this.mostrarMensajeCorrecto();
         this.dismiss();
       },

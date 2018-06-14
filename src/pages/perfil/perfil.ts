@@ -5,9 +5,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UsuarioProvider } from '../../providers/usuario/usuario';
 import { LoginPage } from '../login/login';
 import { Camera } from '@ionic-native/camera';
-import { UploadProvider } from '../../providers/upload/upload';
-import { File, FileEntry } from '@ionic-native/file';
 import { CONSTANTS } from '../../global/constants';
+import * as firebase from 'firebase';
 
 @IonicPage()
 @Component({
@@ -20,11 +19,11 @@ export class PerfilPage {
   public selectedFiles: FileList;
   public currentPhoto: Blob;
   public foto: any;
-  public formData: FormData;
   public nombreImagen: string;
   public url = CONSTANTS.url;
+  public doingRegistro: boolean;
   constructor(public _usuarioService: UsuarioProvider, public toastCtrl: ToastController, public navCtrl: NavController, public navParams: NavParams,
-    private fb: FormBuilder, public app: App, public alertCtrl: AlertController, private camera: Camera, private uploadService: UploadProvider, private file: File) {
+    private fb: FormBuilder, public app: App, public alertCtrl: AlertController, private camera: Camera) {
     this.usuarioForm = this.fb.group({
       dni: ['', Validators.required],
       nombre: ['', Validators.required],
@@ -42,64 +41,42 @@ export class PerfilPage {
    * Seleccionar imagen
    */
   selectPhoto(): void {
+    this.doingRegistro = true;
+
     this.camera.getPicture({
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      sourceType: this.camera.MediaType.PICTURE,
+      destinationType: this.camera.DestinationType.DATA_URL,
       quality: 100,
-      encodingType: this.camera.EncodingType.PNG,
+      encodingType: this.camera.EncodingType.JPEG,
     }).then(imageData => {
-      this.foto = imageData;
-      this.uploadPhoto(imageData);
+      this.foto = 'data:image/jpeg;base64,' + imageData;
+      this.doingRegistro = false;
     }, error => {
-      console.log(error);
+      this.doingRegistro = false;
     });
-  }
-  /**
-   * Resolver ruta de la imagen para obtenerla
-   * @param imageFileUri  String ruta imagen
-   */
-  uploadPhoto(imageFileUri: any): void {
-    this.file.resolveLocalFilesystemUrl(imageFileUri)
-      .then(entry => (<FileEntry>entry).file(file => this.readFile(file)))
-      .catch(err => console.log(err));
-  }
-  /**
-   * Leer la imagen
-   * @param file Imagen
-   */
-  readFile(file: any) {
-    let reader = new FileReader();
-    reader.onloadend = () => {
-      this.formData = new FormData();
-      let imgBlob = new Blob([reader.result], { type: file.type });
-      this.formData.append('file', imgBlob, file.name);
-      this.nombreImagen = file.name;
-    };
-    reader.readAsArrayBuffer(file);
   }
   /**
    * Subir imagen a la api
    */
   upload() {
-    if (this.formData !== undefined) {
-      this.uploadService.saveImage(this.formData).subscribe(
-        (response: any) => {
-          console.log("RESPONSE" + response);
-          if (response.status === 200) {
+    this.doingRegistro = true;
+    if (this.foto !== undefined) {
+      let nombre = this.usuario.nombre + Date.now()
+      const storageRef = firebase.storage().ref('/usuarios/' + nombre)
+      //Tarea realizandose
+      storageRef.putString(this.foto, firebase.storage.StringFormat.DATA_URL)
+        .then((snapshot) => {
+          storageRef.getDownloadURL().then((url) => {
+            this.usuario.imagen = url;
             this.saveUsuario();
-          } else if (response.status === 403) {
-            this.app.getRootNav().setRoot(LoginPage);
-          } else if (response.status === 302) {
-            this.saveUsuario();
-          } else if (response.status) {
+          }).catch((error) => {
+            this.doingRegistro = false;
             this.mostrarMensajeIncorrectoImagen();
-          }
-
-        },
-        error => {
-          console.log(error)
-        }
-      );
+          });
+        }).catch((error) => {
+          this.doingRegistro = false;
+          this.mostrarMensajeIncorrectoImagen();
+        });
     } else {
       this.saveUsuario();
     }
@@ -115,18 +92,13 @@ export class PerfilPage {
    * Guardar datos usuario
    */
   saveUsuario() {
-    if (this.nombreImagen !== undefined) {
-      this.usuario.imagen = this.nombreImagen;
-    }
-    console.log(this.usuario.password);
+    this.foto = undefined;
     this._usuarioService.saveUsuario(this.usuario).subscribe(
       (response: any) => {
-        console.log("RESPONSEEE" + JSON.stringify(response));
         this.mostrarMensajeCorrecto();
         localStorage.setItem("usuario", JSON.stringify(response));
         this.usuario = response;
-        console.log(this.usuario);
-        this.formData = undefined;
+        this.doingRegistro = false;
       },
       (error: any) => {
         if (error.status === 403) {
@@ -134,11 +106,14 @@ export class PerfilPage {
           this.app.getRootNav().setRoot(LoginPage);
         } else if (error.status === 409) {
           this.usuario.dni = JSON.parse(localStorage.getItem("usuario")).dni;
+          this.doingRegistro = false;
           this.mostrarMensajeDuplicado("NIF");
         } else if (error.status === 406) {
           this.usuario.email = JSON.parse(localStorage.getItem("usuario")).email;
+          this.doingRegistro = false;
           this.mostrarMensajeDuplicado("Email");
         } else {
+          this.doingRegistro = false;
           this.mostrarMensajeIncorrecto();
         }
       }
@@ -172,7 +147,6 @@ export class PerfilPage {
         {
           text: 'Cancelar',
           handler: data => {
-            console.log('Cancel clicked');
           }
         },
         {
@@ -180,9 +154,7 @@ export class PerfilPage {
           handler: data => {
             //se comprueba que la contraseña sea correcta
             if (data.pass !== "") {
-              console.log(data.pass);
               this.usuario.password = btoa(data.pass);
-              console.log(this.usuario.password);
 
             }
           }

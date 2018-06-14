@@ -71,7 +71,6 @@ export class ModalReservasRecursoPage {
 
     this._reservaService.getReservasByRecurso(this.recurso.id, this.fechasArray[this.slidePos]).subscribe(
       (response: any) => {
-        console.log(response);
         if (response.length >= 60) {
           this.continue = true
         } else {
@@ -113,7 +112,6 @@ export class ModalReservasRecursoPage {
           loading.dismiss();
           this.mostrarMensajeIncorrecto();
         }
-        console.log(error);
       }
     );
   }
@@ -131,7 +129,6 @@ export class ModalReservasRecursoPage {
    * Inicializar variables
    */
   limpiar() {
-    console.log(this.buscador);
     this.reservas = [];
     this.reservasTotales = [];
     this.getReservas(null, null);
@@ -140,7 +137,6 @@ export class ModalReservasRecursoPage {
    * Metodo para inicializar variables cunado se selecciona una fecha
    */
   seleccionarFecha() {
-    console.log(this.buscador);
     this.fechasArray = [];
     this.getWeek();
   }
@@ -172,7 +168,6 @@ export class ModalReservasRecursoPage {
    * Obtener dias de una semana donde se encuentre la fecha indicada
    */
   getWeek() {
-    console.log(moment(this.buscador).day());
     let diaSemana;
     if (moment(this.buscador).day() !== 0 && moment(this.buscador).day() !== 6) {
       diaSemana = (moment(this.buscador).day() - 1) * -1;
@@ -183,7 +178,6 @@ export class ModalReservasRecursoPage {
         diaSemana = -5;
       }
     }
-    console.log(diaSemana);
     let primerDia;
     this.fechasBusqueda = [];
     primerDia = moment(this.buscador).add(diaSemana, "days").format("YYYY-MM-DD");
@@ -199,7 +193,6 @@ export class ModalReservasRecursoPage {
     for (let i = 1; i < 5; i++) {
       this.fechasArray.push(moment(diaInicial).add(i, "days").format("YYYY-MM-DD"))
     }
-    console.log(this.fechasArray)
 
     if (this.slides !== undefined) {
       let pos = this.fechasArray.indexOf(moment(this.buscador).format("YYYY-MM-DD"))
@@ -229,7 +222,6 @@ export class ModalReservasRecursoPage {
     if (this.slidePos !== 5) {
       this.reservas = [];
       this.reservasTotales = [];
-      console.log(this.slidePos);
       this.fechaMostrar = moment(this.fechasArray[this.slidePos]).format('dddd  DD MMMM YYYY ');
       this.getReservas(null, null);
     }

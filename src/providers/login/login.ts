@@ -25,7 +25,6 @@ export class LoginProvider {
    */
   login(usuarioLogin: any) {
     let json = JSON.stringify(usuarioLogin);
-    console.log(json);
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     return this.http.post(this.url + 'login', json, { headers: headers });
@@ -37,7 +36,6 @@ export class LoginProvider {
    */
   changePassword(changePassUser: any) {
     let json = JSON.stringify(changePassUser);
-    console.log(json);
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     return this.http.post(this.url + 'mail/sendMail', json, { headers: headers });

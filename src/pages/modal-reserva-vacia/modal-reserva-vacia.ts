@@ -30,7 +30,6 @@ export class ModalReservaVaciaPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ModalReservaVaciaPage');
   }
   /**
    * Cerrar ventana
@@ -42,15 +41,12 @@ export class ModalReservaVaciaPage {
    * Guardar reserva
    */
   realizarReserva() {
-    console.log(this.reserva);
     this.reserva.usuario = this.usuario;
     this.reserva.id = "";
     this.doingReserva = true;
     this.selectCurso(this.reserva.curso);
-    console.log(this.reserva);
     this._reservaService.addReserva(this.reserva).subscribe(
       (response: any) => {
-        console.log(response)
         this.mostrarMensajeCorrecto();
         this.dismiss();
         this.doingReserva = false;
@@ -77,7 +73,6 @@ export class ModalReservaVaciaPage {
    * @param idCurso String id curso
    */
   selectCurso(idCurso) {
-    console.log(event);
     let curso = this.usuario.cursos.filter((curso: Curso) => curso.id === idCurso);
     this.reserva.curso = curso[0];
   }

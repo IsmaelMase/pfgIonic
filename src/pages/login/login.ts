@@ -44,7 +44,6 @@ export class LoginPage {
     if (localStorage.getItem("token")) {
       this.navCtrl.setRoot(TabsPage);
     }
-    console.log('ionViewDidLoad LoginPage');
   }
   /**
    * Metodo para loguearse en la aplicacion
@@ -53,7 +52,6 @@ export class LoginPage {
     this.usuario.password = btoa(this.password);
     this._loginService.login(this.usuario).subscribe(
       (response: any) => {
-        console.log(response.authorization);
         if (response.usuario.rol === 'ROL_PROFESOR') {
           localStorage.setItem("token", response.authorization);
           localStorage.setItem("usuario", JSON.stringify(response.usuario))
@@ -63,7 +61,6 @@ export class LoginPage {
         }
       },
       (error: any) => {
-        console.log(error.status);
         this.mostrarMensajeIncorrecto();
       }
     );

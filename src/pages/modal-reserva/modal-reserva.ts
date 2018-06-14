@@ -35,13 +35,11 @@ export class ModalReservaPage {
     this.recurso = navParams.get('recurso');
     this.maxDate = moment(this.recurso.intervalo.fecha_max).format("YYYY-MM-DD");
     this.minDate = moment().format("YYYY-MM-DD");
-    console.log(moment(this.recurso.intervalo.fecha_max).format("YYYY-MM-DD"));
     this.usuario = JSON.parse(localStorage.getItem("usuario"));
     this.reserva = new Reserva("", [], [], this.usuario, this.recurso, null, "");
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ModalReservaPage');
   }
   /**
    * Cerrar ventana
@@ -55,10 +53,8 @@ export class ModalReservaPage {
   realizarReserva() {
     this.doingReserva = true;
     this.selectCurso(this.reserva.curso);
-    console.log(this.reserva);
     this._reservaService.addReserva(this.reserva).subscribe(
       (response: any) => {
-        console.log(response)
         this.mostrarMensajeCorrecto();
         this.dismiss();
         this.doingReserva = false;
@@ -85,7 +81,6 @@ export class ModalReservaPage {
    * @param idCurso String idCurso
    */
   selectCurso(idCurso) {
-    console.log(event);
     let curso = this.usuario.cursos.filter((curso: Curso) => curso.id === idCurso);
     this.reserva.curso = curso[0];
   }
@@ -101,7 +96,6 @@ export class ModalReservaPage {
         (response: any) => {
 
           this.horasDisponibles = response;
-          console.log(this.horasDisponibles);
         },
         (error: any) => {
           if (error.status == 403) {
@@ -110,7 +104,6 @@ export class ModalReservaPage {
           } else {
             this.mostrarMensajeIncorrecto();
           }
-          console.log(error);
         }
       );
     }

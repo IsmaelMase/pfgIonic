@@ -41,7 +41,6 @@ export class RecursosPage {
       content: 'Cargando. Espere por favor'
     });
     loading.present();
-    console.log(this.opciones);
     if (this.opciones === "aulas") {
       this._recursoService.getAulas().subscribe(
         (response: any) => {
@@ -49,7 +48,6 @@ export class RecursosPage {
           this.recursosTotales = response;
           this.recursos.sort(this.ordenarAZ);
           this.recursosTotales.sort(this.ordenarAZ);
-          console.log(this.recursos);
           this.getItems();
           if (refresher != null) {
             refresher.complete();
@@ -74,7 +72,6 @@ export class RecursosPage {
           this.recursosTotales = response;
           this.recursos.sort(this.ordenarAZ);
           this.recursosTotales.sort(this.ordenarAZ);
-          console.log(this.recursos);
           this.getItems();
           if (refresher != null) {
             refresher.complete();
@@ -128,7 +125,6 @@ export class RecursosPage {
           role: 'cancel',
           icon: !this.platform.is('ios') ? 'md-close' : null,
           handler: () => {
-            console.log('Reserva clicked');
           }
         }, {
           text: 'Ver datos e incidencias',
